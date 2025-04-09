@@ -9,6 +9,7 @@
 #include "CTrapezid.h"
 #include "CMissile.h"
 #include "Cplayer.h"
+#include "CStar.h"
 
 #define EXAMPLE 5
 
@@ -41,10 +42,9 @@ extern glm::mat4 g_mxGDist[QUAD_NUM];
 extern GLfloat g_viewScale;
 
 #elif EXAMPLE == 5
-//extern CQuad* g_quad_missile;
 extern CQuad* g_quad_shild;
 extern CPlayer* player;
-//extern std::list<CMissile*> missiles;
+
 
 extern GLfloat g_viewScale;
 extern bool g_bRotating;

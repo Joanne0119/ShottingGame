@@ -1,15 +1,20 @@
 #pragma once
 #include <glm/glm.hpp>
 
-class CEnemy {
+#define STAR_VTX_COUNT  8
+#define STAR_INDEX_COUNT 18
+#define STAR_VTX_ATTR_COUNT 11    // 單位為 float 個數
+
+class Star
+{
 public:
-    CEnemy();
-    ~CEnemy();
+    Star();
+    ~Star();
     void setupVertexAttributes();
     GLuint setShader(const char* vshader, const char* fshader);
     void setShaderID(GLuint shaderID);
-    virtual void draw();
-    virtual void update(float dt);
+    void draw();
+    void update(float dt);
     void reset();
     void setColor(glm::vec3 vColor); // 設定模型的顏色
     void setScale(glm::vec3 vScale); // 設定模型的縮放比
@@ -17,10 +22,11 @@ public:
     void setRotX(float angle); // 設定模型的X軸旋轉角度
     void setRotY(float angle); // 設定模型的Y軸旋轉角度
     void setRotZ(float angle); // 設定模型的Z軸旋轉角度
-    void setVtxCount(int vtxCount, int indexCount, int vtxAttrCount);
     void setTransformMatrix(glm::mat4 mxMatrix);
     glm::mat4 getModelMatrix();
     GLuint getShaderProgram();
+    float _speed;
+    float _flashTime;
 
 private:
     GLfloat* _points;
@@ -32,7 +38,6 @@ private:
     bool _bTransform, _bOnTransform;
     // _bTransform : true 代表有設定新的轉換矩陣
     // _bOnTransform : true 代表曾經設定過轉換矩陣，用於判斷是否需要更新 model matrix
-    int _vtxCount, _indexCount, _vtxAttrCount;
     glm::vec3 _color;
     glm::vec3 _scale;    // 模型的縮放值
     glm::vec3 _pos;        // 模型的位置

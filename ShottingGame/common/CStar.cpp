@@ -1,11 +1,11 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/glm.hpp>
-#include "CEnemy.h"
+#include <GLFW/glfw3.h>
 
+#include "CStar.h"
 #include "initshader.h"
 
-CEnemy::CEnemy()
+Star::Star()
 {
     _vao = 0; _vbo = 0; _ebo = 0;
     _shaderProg = 0;
@@ -24,22 +24,24 @@ CEnemy::CEnemy()
     _mxTRS = glm::mat4(1.0f);
     _mxTransform = glm::mat4(1.0f);
     _mxFinal = glm::mat4(1.0f);
-    _vtxCount = 4;
-    _indexCount = 6;
-    _vtxAttrCount = 11;
-    _points = new GLfloat[_vtxCount * _vtxAttrCount] {
+    _speed = 0.3f;
+    _points = new GLfloat[STAR_VTX_COUNT * STAR_VTX_ATTR_COUNT] {
         // ¶Ï∏m            // √C¶‚         // ™k¶V∂q       // ∂KπœÆyº–
-        -0.8f, -0.7f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-         0.8f, -0.7f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
+        -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+        -0.1f, -0.1f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+         0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+         0.1f, -0.1f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+         0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+         0.1f,  0.1f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+         0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
+        -0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
     };
-    _idx = new GLuint[_indexCount]{  0, 1, 2, 2, 3, 0 };
+    _idx = new GLuint[STAR_INDEX_COUNT]{ 0, 1, 7, 1 ,2 ,3, 3, 4, 5, 5, 6, 7, 7, 3, 5, 7, 1, 3 };
 
     setupVertexAttributes();
 }
 
-CEnemy::~CEnemy()
+Star::~Star()
 {
     glDeleteBuffers(1, &_vbo);  //•˝ƒ¿©Ò VBO ªP EBO
     glDeleteBuffers(1, &_ebo);
@@ -49,7 +51,7 @@ CEnemy::~CEnemy()
     if (_idx != NULL) delete[] _idx;
 }
 
-void CEnemy::setupVertexAttributes()
+void Star::setupVertexAttributes()
 {
     // ≥]©w VAO°BVBO ªP EBO
     glGenVertexArrays(1, &_vao);
@@ -61,31 +63,31 @@ void CEnemy::setupVertexAttributes()
 
     // ≥]©w VBO
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _vtxCount * _vtxAttrCount * sizeof(_points), _points, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, STAR_VTX_COUNT * STAR_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
 
     // ≥]©w EBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indexCount * sizeof(GLuint), _idx, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, STAR_INDEX_COUNT * sizeof(GLuint), _idx, GL_STATIC_DRAW);
 
     // ¶Ï∏mƒ›©
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _vtxAttrCount * sizeof(float), BUFFER_OFFSET(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, STAR_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(0));
     glEnableVertexAttribArray(0);
 
     // √C¶‚ƒ›©
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, _vtxAttrCount * sizeof(float), BUFFER_OFFSET(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, STAR_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     //™k¶V∂qƒ›©
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _vtxAttrCount * sizeof(float), BUFFER_OFFSET(6 * sizeof(float)));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, STAR_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
     //∂KπœÆyº–ƒ›©
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, _vtxAttrCount * sizeof(float), BUFFER_OFFSET(9 * sizeof(float)));
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, STAR_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(9 * sizeof(float)));
     glEnableVertexAttribArray(3);
     glBindVertexArray(0); // ∏—∞£πÔ VAO ™∫∏j©w
 }
 
-GLuint CEnemy::setShader(const char* vshader, const  char* fshader)
+GLuint Star::setShader(const char* vshader, const  char* fshader)
 {
     _shaderProg = createShader(vshader, fshader);
     glUseProgram(_shaderProg);
@@ -94,7 +96,7 @@ GLuint CEnemy::setShader(const char* vshader, const  char* fshader)
     return _shaderProg;
 }
 
-void CEnemy::setShaderID(GLuint shaderID)
+void Star::setShaderID(GLuint shaderID)
 {
     _shaderProg = shaderID;
     glUseProgram(_shaderProg);
@@ -102,61 +104,51 @@ void CEnemy::setShaderID(GLuint shaderID)
     glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxTRS));
 }
 
-void CEnemy::setColor(glm::vec3 vColor)
+void Star::setColor(glm::vec3 vColor)
 {
     _color = vColor;
-    for (int i = 0; i < _vtxCount; i++) {
-        _points[i * _vtxAttrCount + COLOR_OFFSET ]  = _color.x;
-        _points[i * _vtxAttrCount + COLOR_OFFSET+1] = _color.y;
-        _points[i * _vtxAttrCount + COLOR_OFFSET+2] = _color.z;
+    for (int i = 0; i < STAR_VTX_COUNT; i++) {
+        _points[i * STAR_VTX_ATTR_COUNT + COLOR_OFFSET ]  = _color.x;
+        _points[i * STAR_VTX_ATTR_COUNT + COLOR_OFFSET+1] = _color.y;
+        _points[i * STAR_VTX_ATTR_COUNT + COLOR_OFFSET+2] = _color.z;
     }
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _vtxCount * _vtxAttrCount * sizeof(_points), _points, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, STAR_VTX_COUNT * STAR_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
 }
 
-void CEnemy::draw()
+void Star::draw()
 {
     updateMatrix();
     glUseProgram(_shaderProg);
     glBindVertexArray(_vao);
-    glDrawElements(GL_TRIANGLES, _vtxCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, STAR_INDEX_COUNT, GL_UNSIGNED_INT, 0);
 }
 
-void CEnemy::update(float dt){
-    float range = 2.0f;
-
-        float dx = (rand() % 1000 / 1000.0f - 0.5f) * range * 0.1f;
-        float dy = (rand() % 1000 / 1000.0f - 0.5f) * range * 0.1f;
-
-        _pos.x += dx;
-        _pos.y += dy;
-
-        // 可選：限制不能走出範圍
-        _pos.x = std::clamp(_pos.x, -range, range);
-        _pos.y = std::clamp(_pos.y, -range, range);
+void Star::update(float dt){
+    _pos.y -= _speed * dt;  // 星星向下移動，模擬星空流動的效果
+    if (_pos.y < -10.0f) {
+        _pos.y = 10.0f;  // 當星星離開螢幕時，重新出現在上方
+        _pos.x = rand() % 20 - 10;  // 隨機X位置
+    }
+    
+    setPos(_pos);  // 更新星星位置
 }
 
-void CEnemy::setVtxCount(int vtxCount, int indexCount, int vtxAttrCount){
-    _vtxCount = vtxCount;
-    _indexCount = indexCount;
-    _vtxCount = vtxAttrCount;
-}
-
-void CEnemy::setScale(glm::vec3 vScale)
+void Star::setScale(glm::vec3 vScale)
 {
     _scale = vScale;
     _bScale = true;
     _mxScale = glm::scale(glm::mat4(1.0f), _scale);
 }
 
-void CEnemy::setPos(glm::vec3 vPt)
+void Star::setPos(glm::vec3 vPt)
 {
     _pos = vPt;
     _bPos = true;
     _mxPos = glm::translate(glm::mat4(1.0f), _pos);
 }
 
-void CEnemy::setRotX(float angle)
+void Star::setRotX(float angle)
 {
     _rotX = glm::radians(angle);
     _rotAxis = _rotAxis | 1;
@@ -165,7 +157,7 @@ void CEnemy::setRotX(float angle)
     _bRotation = true;
 }
 
-void CEnemy::setRotY(float angle)
+void Star::setRotY(float angle)
 {
     _rotY = glm::radians(angle);
     _rotAxis = _rotAxis | 2;
@@ -175,7 +167,7 @@ void CEnemy::setRotY(float angle)
     _bRotation = true;
 }
 
-void CEnemy::setRotZ(float angle)
+void Star::setRotZ(float angle)
 {
     _rotZ = glm::radians(angle);
     _mxRotZ = glm::rotate(glm::mat4(1.0f), _rotZ, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -186,7 +178,7 @@ void CEnemy::setRotZ(float angle)
     _bRotation = true;
 }
 
-void CEnemy::updateMatrix()
+void Star::updateMatrix()
 {
     if (_bScale || _bPos || _bRotation)
     {
@@ -207,17 +199,17 @@ void CEnemy::updateMatrix()
     glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxFinal));
 }
 
-void CEnemy::setTransformMatrix(glm::mat4 mxMatrix)
+void Star::setTransformMatrix(glm::mat4 mxMatrix)
 {
     _bOnTransform = _bTransform = true;
     _mxTransform = mxMatrix;
 }
 
-glm::mat4 CEnemy::getModelMatrix() { return _mxFinal; }
+glm::mat4 Star::getModelMatrix() { return _mxFinal; }
 
-GLuint CEnemy::getShaderProgram() { return _shaderProg; }
+GLuint Star::getShaderProgram() { return _shaderProg; }
 
-void CEnemy::reset()
+void Star::reset()
 {
     _scale = glm::vec3(1.0f, 1.0f, 1.0f);
     _color = glm::vec3(1.0f, 1.0f, 1.0f);

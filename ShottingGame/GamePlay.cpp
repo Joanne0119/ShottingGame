@@ -41,6 +41,7 @@
 #include "common/CTrapezid.h"
 #include "common/Cplayer.h"
 #include "common/CMissile.h"
+#include "common/CStar.h"
 #include "common/initshader.h"
 #include "common/arcball.h"
 #include "common/wmhandler.h"
@@ -60,7 +61,9 @@ GLfloat g_viewScale = 4.0f;
 CTrapezid* g_trap_body = nullptr;
 CQuad* g_quad_shild = nullptr;
 CPlayer* player = nullptr;
+Star* star = nullptr;
 
+int starNumber = 50;
 glm::vec3 g_GDist[12];
 void initCirclePoints() {
     glm::vec3 center(0.0f, 0.0f, 1.0f);  // 圓心
@@ -78,6 +81,14 @@ void initCirclePoints() {
 
 void loadScene(void){
     g_shaderProg = createShader("vshader21.glsl","fshader21.glsl");
+    star = new Star[starNumber];
+    for (int i = 0; i <starNumber; i++) {
+        star[i].setShaderID(g_shaderProg);
+        star[i].setColor(glm::vec3(0.5f, 0.5f, 0.0f));
+        star[i].setScale(glm::vec3(0.2f));  // 調整星星的大小
+        star[i].setPos(glm::vec3(rand() % 20 - 10, rand() % 20 - 10, 0.0f));  // 隨機生成星星位置
+        star[i]._speed = 0.1f + static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    }
     player = new CPlayer(g_shaderProg);
     initCirclePoints();
     g_quad_shild = new CQuad[12];
@@ -97,12 +108,13 @@ void loadScene(void){
     g_projMx = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, -2.0f, 2.0f);
     GLint projLoc = glGetUniformLocation(g_shaderProg, "mxProj");     // 取得 MVP 變數的位置
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(g_projMx));
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // 設定清除 back buffer 背景的顏色
+    glClearColor(0.08f, 0.08f, 0.18f, 1.0f); // 設定清除 back buffer 背景的顏色
 }
 // MARK: -render
 
 void render(void){
     glClear( GL_COLOR_BUFFER_BIT );            // clear the window
+    for (int i = 0; i < starNumber; i++) star[i].draw();
     for (int i = 0; i < 12; i++) g_quad_shild[i].draw();
     player->draw();
 }
@@ -121,6 +133,9 @@ void update(float dt)
 //        g_quad->setRotZ(-g_angle);// 順時針
         
     }
+    if(g_bMoving){
+        for (int i = 0; i < starNumber; i++) star[i].update(dt);
+    }
     
     player->update(dt);
 //    std::cout << player->getPos().x << "\n";
@@ -129,6 +144,7 @@ void update(float dt)
 // MARK: - release
 void releaseAll()
 {
+    if(star != nullptr) delete [] star;
     if(g_quad_shild != nullptr) delete [] g_quad_shild;
     
     if(player != nullptr) delete player;
