@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F57B1D102D9FA4C500111703 /* CMissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F57B1D0F2D9FA4C500111703 /* CMissile.cpp */; };
+		F57B1D132DA392F200111703 /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F57B1D122DA392F200111703 /* CPlayer.cpp */; };
+		F5B34A902DA6A2D100A47FEE /* CEnemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B34A8F2DA6A2D100A47FEE /* CEnemy.cpp */; };
+		F5B9349A2D994457001B0215 /* CTrapezid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B934992D994457001B0215 /* CTrapezid.cpp */; };
+		F5F30C352D93D933001924C0 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F30C342D93D933001924C0 /* OpenGL.framework */; };
+		F5F30C372D93D94B001924C0 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F30C362D93D94B001924C0 /* libGLEW.2.2.0.dylib */; };
+		F5F30C392D93D95E001924C0 /* libglfw.3.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F30C382D93D95E001924C0 /* libglfw.3.4.dylib */; };
+		F5F30C3B2D93D973001924C0 /* libglm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F30C3A2D93D973001924C0 /* libglm.dylib */; };
+		F5F30C502D93DD45001924C0 /* initShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C432D93DD45001924C0 /* initShader.cpp */; };
+		F5F30C512D93DD45001924C0 /* wmhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C442D93DD45001924C0 /* wmhandler.cpp */; };
+		F5F30C522D93DD45001924C0 /* CTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C462D93DD45001924C0 /* CTriangle.cpp */; };
+		F5F30C532D93DD45001924C0 /* CPenta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C472D93DD45001924C0 /* CPenta.cpp */; };
+		F5F30C542D93DD45001924C0 /* CQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C482D93DD45001924C0 /* CQuad.cpp */; };
+		F5F30C552D93DD45001924C0 /* arcball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C4B2D93DD45001924C0 /* arcball.cpp */; };
+		F5F30C602D93E2CC001924C0 /* GamePlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5F30C5F2D93E2CC001924C0 /* GamePlay.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F5F30C272D93D8DF001924C0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F57B1D0F2D9FA4C500111703 /* CMissile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMissile.cpp; sourceTree = "<group>"; };
+		F57B1D112D9FA4DA00111703 /* CMissile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMissile.h; sourceTree = "<group>"; };
+		F57B1D122DA392F200111703 /* CPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayer.cpp; sourceTree = "<group>"; };
+		F57B1D142DA392FF00111703 /* Cplayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cplayer.h; sourceTree = "<group>"; };
+		F5B34A8F2DA6A2D100A47FEE /* CEnemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CEnemy.cpp; sourceTree = "<group>"; };
+		F5B34A912DA6A2FC00A47FEE /* CEnemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CEnemy.h; sourceTree = "<group>"; };
+		F5B934992D994457001B0215 /* CTrapezid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTrapezid.cpp; sourceTree = "<group>"; };
+		F5B9349B2D99446B001B0215 /* CTrapezid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTrapezid.h; sourceTree = "<group>"; };
+		F5F30C292D93D8DF001924C0 /* ShottingGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ShottingGame; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5F30C342D93D933001924C0 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F5F30C362D93D94B001924C0 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../../../opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
+		F5F30C382D93D95E001924C0 /* libglfw.3.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.4.dylib; path = ../../../../../../opt/homebrew/Cellar/glfw/3.4/lib/libglfw.3.4.dylib; sourceTree = "<group>"; };
+		F5F30C3A2D93D973001924C0 /* libglm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglm.dylib; path = ../../../../../../opt/homebrew/Cellar/glm/1.0.1/lib/libglm.dylib; sourceTree = "<group>"; };
+		F5F30C3C2D93D982001924C0 /* ShottingGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShottingGame.entitlements; sourceTree = "<group>"; };
+		F5F30C432D93DD45001924C0 /* initShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = initShader.cpp; sourceTree = "<group>"; };
+		F5F30C442D93DD45001924C0 /* wmhandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wmhandler.cpp; sourceTree = "<group>"; };
+		F5F30C452D93DD45001924C0 /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
+		F5F30C462D93DD45001924C0 /* CTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTriangle.cpp; sourceTree = "<group>"; };
+		F5F30C472D93DD45001924C0 /* CPenta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPenta.cpp; sourceTree = "<group>"; };
+		F5F30C482D93DD45001924C0 /* CQuad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CQuad.cpp; sourceTree = "<group>"; };
+		F5F30C492D93DD45001924C0 /* CTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTriangle.h; sourceTree = "<group>"; };
+		F5F30C4A2D93DD45001924C0 /* arcball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arcball.h; sourceTree = "<group>"; };
+		F5F30C4B2D93DD45001924C0 /* arcball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arcball.cpp; sourceTree = "<group>"; };
+		F5F30C4C2D93DD45001924C0 /* CPenta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPenta.h; sourceTree = "<group>"; };
+		F5F30C4D2D93DD45001924C0 /* initshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = initshader.h; sourceTree = "<group>"; };
+		F5F30C4E2D93DD45001924C0 /* CQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CQuad.h; sourceTree = "<group>"; };
+		F5F30C4F2D93DD45001924C0 /* wmhandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wmhandler.h; sourceTree = "<group>"; };
+		F5F30C582D93DD61001924C0 /* vshader21.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader21.glsl; sourceTree = "<group>"; };
+		F5F30C592D93DD61001924C0 /* fshader21.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader21.glsl; sourceTree = "<group>"; };
+		F5F30C5A2D93DD61001924C0 /* fshader12.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader12.glsl; sourceTree = "<group>"; };
+		F5F30C5B2D93DD61001924C0 /* vshader12.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader12.glsl; sourceTree = "<group>"; };
+		F5F30C5F2D93E2CC001924C0 /* GamePlay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GamePlay.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F5F30C262D93D8DF001924C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5F30C3B2D93D973001924C0 /* libglm.dylib in Frameworks */,
+				F5F30C392D93D95E001924C0 /* libglfw.3.4.dylib in Frameworks */,
+				F5F30C372D93D94B001924C0 /* libGLEW.2.2.0.dylib in Frameworks */,
+				F5F30C352D93D933001924C0 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F5F30C202D93D8DF001924C0 = {
+			isa = PBXGroup;
+			children = (
+				F5F30C2B2D93D8DF001924C0 /* ShottingGame */,
+				F5F30C2A2D93D8DF001924C0 /* Products */,
+				F5F30C332D93D933001924C0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F5F30C2A2D93D8DF001924C0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F5F30C292D93D8DF001924C0 /* ShottingGame */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F5F30C2B2D93D8DF001924C0 /* ShottingGame */ = {
+			isa = PBXGroup;
+			children = (
+				F5F30C5F2D93E2CC001924C0 /* GamePlay.cpp */,
+				F5F30C592D93DD61001924C0 /* fshader21.glsl */,
+				F5F30C582D93DD61001924C0 /* vshader21.glsl */,
+				F5F30C5C2D93DD61001924C0 /* shader */,
+				F5F30C3D2D93DA8B001924C0 /* common */,
+				F5F30C3C2D93D982001924C0 /* ShottingGame.entitlements */,
+			);
+			path = ShottingGame;
+			sourceTree = "<group>";
+		};
+		F5F30C332D93D933001924C0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F5F30C3A2D93D973001924C0 /* libglm.dylib */,
+				F5F30C382D93D95E001924C0 /* libglfw.3.4.dylib */,
+				F5F30C362D93D94B001924C0 /* libGLEW.2.2.0.dylib */,
+				F5F30C342D93D933001924C0 /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F5F30C3D2D93DA8B001924C0 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				F5F30C4B2D93DD45001924C0 /* arcball.cpp */,
+				F5F30C4A2D93DD45001924C0 /* arcball.h */,
+				F5F30C472D93DD45001924C0 /* CPenta.cpp */,
+				F5F30C4C2D93DD45001924C0 /* CPenta.h */,
+				F5B934992D994457001B0215 /* CTrapezid.cpp */,
+				F5B9349B2D99446B001B0215 /* CTrapezid.h */,
+				F5F30C482D93DD45001924C0 /* CQuad.cpp */,
+				F5F30C4E2D93DD45001924C0 /* CQuad.h */,
+				F57B1D122DA392F200111703 /* CPlayer.cpp */,
+				F57B1D142DA392FF00111703 /* Cplayer.h */,
+				F57B1D0F2D9FA4C500111703 /* CMissile.cpp */,
+				F57B1D112D9FA4DA00111703 /* CMissile.h */,
+				F5F30C462D93DD45001924C0 /* CTriangle.cpp */,
+				F5F30C492D93DD45001924C0 /* CTriangle.h */,
+				F5B34A8F2DA6A2D100A47FEE /* CEnemy.cpp */,
+				F5B34A912DA6A2FC00A47FEE /* CEnemy.h */,
+				F5F30C432D93DD45001924C0 /* initShader.cpp */,
+				F5F30C4D2D93DD45001924C0 /* initshader.h */,
+				F5F30C452D93DD45001924C0 /* typedefs.h */,
+				F5F30C442D93DD45001924C0 /* wmhandler.cpp */,
+				F5F30C4F2D93DD45001924C0 /* wmhandler.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		F5F30C5C2D93DD61001924C0 /* shader */ = {
+			isa = PBXGroup;
+			children = (
+				F5F30C5A2D93DD61001924C0 /* fshader12.glsl */,
+				F5F30C5B2D93DD61001924C0 /* vshader12.glsl */,
+			);
+			path = shader;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F5F30C282D93D8DF001924C0 /* ShottingGame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5F30C302D93D8DF001924C0 /* Build configuration list for PBXNativeTarget "ShottingGame" */;
+			buildPhases = (
+				F5F30C252D93D8DF001924C0 /* Sources */,
+				F5F30C262D93D8DF001924C0 /* Frameworks */,
+				F5F30C272D93D8DF001924C0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShottingGame;
+			productName = ShottingGame;
+			productReference = F5F30C292D93D8DF001924C0 /* ShottingGame */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F5F30C212D93D8DF001924C0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					F5F30C282D93D8DF001924C0 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = F5F30C242D93D8DF001924C0 /* Build configuration list for PBXProject "ShottingGame" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F5F30C202D93D8DF001924C0;
+			productRefGroup = F5F30C2A2D93D8DF001924C0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F5F30C282D93D8DF001924C0 /* ShottingGame */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F5F30C252D93D8DF001924C0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5F30C502D93DD45001924C0 /* initShader.cpp in Sources */,
+				F57B1D102D9FA4C500111703 /* CMissile.cpp in Sources */,
+				F5F30C552D93DD45001924C0 /* arcball.cpp in Sources */,
+				F5F30C532D93DD45001924C0 /* CPenta.cpp in Sources */,
+				F57B1D132DA392F200111703 /* CPlayer.cpp in Sources */,
+				F5F30C602D93E2CC001924C0 /* GamePlay.cpp in Sources */,
+				F5B9349A2D994457001B0215 /* CTrapezid.cpp in Sources */,
+				F5F30C542D93DD45001924C0 /* CQuad.cpp in Sources */,
+				F5F30C512D93DD45001924C0 /* wmhandler.cpp in Sources */,
+				F5B34A902DA6A2D100A47FEE /* CEnemy.cpp in Sources */,
+				F5F30C522D93DD45001924C0 /* CTriangle.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F5F30C2E2D93D8DF001924C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F5F30C2F2D93D8DF001924C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F5F30C312D93D8DF001924C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShottingGame/ShottingGame.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3CZA3RR964;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/Cellar/glm/1.0.1/include,
+					/opt/homebrew/Cellar/glew/2.2.0_1/include,
+					/opt/homebrew/Cellar/glfw/3.4/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/homebrew/Cellar/glew/2.2.0_1/lib,
+					/opt/homebrew/Cellar/glfw/3.4/lib,
+					/opt/homebrew/Cellar/glm/1.0.1/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F5F30C322D93D8DF001924C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShottingGame/ShottingGame.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3CZA3RR964;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/Cellar/glm/1.0.1/include,
+					/opt/homebrew/Cellar/glew/2.2.0_1/include,
+					/opt/homebrew/Cellar/glfw/3.4/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/homebrew/Cellar/glew/2.2.0_1/lib,
+					/opt/homebrew/Cellar/glfw/3.4/lib,
+					/opt/homebrew/Cellar/glm/1.0.1/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F5F30C242D93D8DF001924C0 /* Build configuration list for PBXProject "ShottingGame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5F30C2E2D93D8DF001924C0 /* Debug */,
+				F5F30C2F2D93D8DF001924C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5F30C302D93D8DF001924C0 /* Build configuration list for PBXNativeTarget "ShottingGame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5F30C312D93D8DF001924C0 /* Debug */,
+				F5F30C322D93D8DF001924C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F5F30C212D93D8DF001924C0 /* Project object */;
+}
