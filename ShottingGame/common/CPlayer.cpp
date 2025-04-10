@@ -119,6 +119,19 @@ void CPlayer::update(float dt){
             ++it;
         }
     }
+    // 每幀累積向下移動
+    _fireScale.y += 0.05f * dt;
+    _firePos[0].y -= 0.05f * dt;
+    _firePos[1].y -= 0.05f * dt;
+
+    // 如果火焰移動到太下面，就重設回原點
+    if (_fireScale.y > 0.30f) {
+        _fireScale.y = 0.25f;
+        _firePos[0].y = -2.6f;
+        _firePos[1].y = -2.6f;
+    }
+    setPos(_topPos, _bodyPos, _wingsPos, _windowPos, _bottomPos, _firePos[0], _firePos[1]);
+    setScale(_topScale, _bodyScale, _wingsScale, _windowScale, _bottomScale, _fireScale);
 }
 
 void CPlayer::draw()
@@ -181,12 +194,12 @@ void CPlayer::setColor(glm::vec3 vTopColor, glm::vec3 vBodyColor, glm::vec3 vWin
 
 void CPlayer::setScale(glm::vec3 vTopScale, glm::vec3 vBodyScale, glm::vec3 vWingsScale, glm::vec3 vWindowScale, glm::vec3 vBottomScale, glm::vec3 vFireScale)
 {
-    vTopScale *= _topScale;
-    vBodyScale *= _bodyScale;
-    vWingsScale *= _wingsScale;
-    vWindowScale *= _windowScale;
-    vBottomScale *= _bottomScale;
-    vFireScale *= _fireScale;
+    vTopScale = _topScale;
+    vBodyScale = _bodyScale;
+    vWingsScale = _wingsScale;
+    vWindowScale = _windowScale;
+    vBottomScale = _bottomScale;
+    vFireScale = _fireScale;
     
     _bScale = true;
     top->setScale(vTopScale);
@@ -263,13 +276,13 @@ void CPlayer::setPos(glm::vec3 _vPos){
 void CPlayer::setPos(glm::vec3 vTopPos, glm::vec3 vBodyPos, glm::vec3 vWingsPos, glm::vec3 vWindowPos, glm::vec3 vBottomPos, glm::vec3 vFirePos1, glm::vec3 vFirePos2)
 {
     _bPos = true;
-    vTopPos *= _topPos;
-    vBodyPos *= _bodyPos;
-    vWingsPos *= _wingsPos;
-    vWindowPos *= _windowPos;
-    vBottomPos *= _bottomPos;
-    vFirePos1 *= _firePos[0];
-    vFirePos2 *= _firePos[1];
+    vTopPos = _topPos;
+    vBodyPos = _bodyPos;
+    vWingsPos = _wingsPos;
+    vWindowPos = _windowPos;
+    vBottomPos = _bottomPos;
+    vFirePos1 = _firePos[0];
+    vFirePos2 = _firePos[1];
     
     _bScale = true;
     top->setPos(vTopPos);
@@ -278,7 +291,7 @@ void CPlayer::setPos(glm::vec3 vTopPos, glm::vec3 vBodyPos, glm::vec3 vWingsPos,
     window->setPos(vWindowPos);
     bottom->setPos(vBottomPos);
     fire[0].setPos(vFirePos1);
-    fire[1].setPos(vFirePos1);
+    fire[1].setPos(vFirePos2);
 }
 
 glm::vec3 CPlayer::getPos() {

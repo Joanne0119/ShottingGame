@@ -4,7 +4,7 @@
 //   ✓   (1%) 戰鬥機傭有防禦裝置，並以父子關係方式呈現
 //   ✓   (1%) 可以發射飛彈
 //   ✓   (3%) 能提供連續發射(LINKED LIST，自己撰寫，使用STL 2分)
-//      (2%)  能產生有速度感的背景物件，或是其他裝飾性的物件
+//   ✓   (2%)  能產生有速度感的背景物件，或是其他裝飾性的物件
 //   (11%) 敵人部分
 //      (2%)  有至少三種以上不同外形的敵人(不同的顏色)，基本的四方型不算在內
 //      (3%) 以物件導向的多型來控制所有的敵人
@@ -52,6 +52,7 @@
 Arcball g_arcball;
 bool g_bRotating = false;
 bool g_bMoving = false;
+bool gameStart = false;
 
 GLuint g_shaderProg;
 glm::mat4 g_viewMx = glm::mat4(1.0f);
@@ -133,12 +134,13 @@ void update(float dt)
 //        g_quad->setRotZ(-g_angle);// 順時針
         
     }
-    if(g_bMoving){
+    if(gameStart){
         for (int i = 0; i < starNumber; i++) star[i].update(dt);
+        player->update(dt);
+    //    std::cout << player->getPos().x << "\n";
     }
     
-    player->update(dt);
-//    std::cout << player->getPos().x << "\n";
+    
 }
 
 // MARK: - release

@@ -49,6 +49,7 @@ extern CPlayer* player;
 extern GLfloat g_viewScale;
 extern bool g_bRotating;
 extern bool g_bMoving;
+extern bool gameStart;
 #endif
 
 // 滑鼠按鈕按下後 callback function(回呼函式) ---------------
@@ -165,6 +166,10 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
         for (int i = 0; i < 12; i++){ g_quad_shild[i].setTransformMatrix(mxTransform);
         }
         
+        
+    }
+    
+    if(gameStart){
         player->shoot();
     }
 #endif
@@ -209,6 +214,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 #elif EXAMPLE == 5
             if (action == GLFW_PRESS) { 
                 g_bMoving = !g_bMoving;
+                gameStart = !gameStart;
             }
 #endif
             break;
