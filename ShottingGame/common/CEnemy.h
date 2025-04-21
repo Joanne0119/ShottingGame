@@ -1,28 +1,39 @@
 #pragma once
 #include <glm/glm.hpp>
 
+enum State { Alive, Hurt1, Hurt2, Hurt3, Exploding, Dead };
+
 class CEnemy {
 public:
     CEnemy();
-    ~CEnemy();
+    virtual ~CEnemy();
     void setupVertexAttributes();
     GLuint setShader(const char* vshader, const char* fshader);
     void setShaderID(GLuint shaderID);
     virtual void draw();
+    virtual void drawExplosion();
     virtual void update(float dt);
-    void reset();
+    virtual void reset();
     void setColor(glm::vec3 vColor); // 設定模型的顏色
     void setScale(glm::vec3 vScale); // 設定模型的縮放比
     void setPos(glm::vec3 vPt); // 設定模型的位置
     void setRotX(float angle); // 設定模型的X軸旋轉角度
     void setRotY(float angle); // 設定模型的Y軸旋轉角度
     void setRotZ(float angle); // 設定模型的Z軸旋轉角度
-    void setVtxCount(int vtxCount, int indexCount, int vtxAttrCount);
     void setTransformMatrix(glm::mat4 mxMatrix);
+    void updateMatrix();
     glm::mat4 getModelMatrix();
     GLuint getShaderProgram();
+    glm::vec3 getPos() const;
+    
+    //Enemy Action
+    void onHit(int damage);
+    bool isDead() const;
+    void setState(State state);
+    State getState() const;
+    
 
-private:
+protected:
     GLfloat* _points;
     GLuint* _idx;
     GLuint _vao, _vbo, _ebo;
@@ -33,11 +44,25 @@ private:
     // _bTransform : true 代表有設定新的轉換矩陣
     // _bOnTransform : true 代表曾經設定過轉換矩陣，用於判斷是否需要更新 model matrix
     int _vtxCount, _indexCount, _vtxAttrCount;
+    
+    //Exploding
+    int _explosionvtxCount;
+    int _explosionidxCount;
+    int _explosionvtxAttrCount;
+    GLfloat* _explosionPoints;
+    GLuint* _explosionIdx;
+    //Enemy
+    bool _isDead;
+    float _speed;
+    int _hp;
+    float _dirX;
+    float _explosionTimer;
+    State _state;
+    
     glm::vec3 _color;
     glm::vec3 _scale;    // 模型的縮放值
     glm::vec3 _pos;        // 模型的位置
     GLfloat _rotX, _rotY, _rotZ; // 模型的旋轉角度
     glm::mat4 _mxRotX, _mxRotY, _mxRotZ, _mxRotation, _mxScale, _mxPos, _mxTRS;
     glm::mat4 _mxTransform, _mxFinal;
-    void updateMatrix();
 };

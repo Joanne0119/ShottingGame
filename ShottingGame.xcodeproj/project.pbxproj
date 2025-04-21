@@ -11,6 +11,7 @@
 		F57B1D132DA392F200111703 /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F57B1D122DA392F200111703 /* CPlayer.cpp */; };
 		F5B34A902DA6A2D100A47FEE /* CEnemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B34A8F2DA6A2D100A47FEE /* CEnemy.cpp */; };
 		F5B34A932DA6B42C00A47FEE /* CStar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B34A922DA6B42C00A47FEE /* CStar.cpp */; };
+		F5B34A972DA771E100A47FEE /* EnemyA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B34A952DA771E100A47FEE /* EnemyA.cpp */; };
 		F5B9349A2D994457001B0215 /* CTrapezid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B934992D994457001B0215 /* CTrapezid.cpp */; };
 		F5F30C352D93D933001924C0 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F30C342D93D933001924C0 /* OpenGL.framework */; };
 		F5F30C372D93D94B001924C0 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F30C362D93D94B001924C0 /* libGLEW.2.2.0.dylib */; };
@@ -46,6 +47,8 @@
 		F5B34A912DA6A2FC00A47FEE /* CEnemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CEnemy.h; sourceTree = "<group>"; };
 		F5B34A922DA6B42C00A47FEE /* CStar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CStar.cpp; sourceTree = "<group>"; };
 		F5B34A942DA6B5E400A47FEE /* CStar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CStar.h; sourceTree = "<group>"; };
+		F5B34A952DA771E100A47FEE /* EnemyA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyA.cpp; sourceTree = "<group>"; };
+		F5B34A982DA771EE00A47FEE /* EnemyA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyA.h; sourceTree = "<group>"; };
 		F5B934992D994457001B0215 /* CTrapezid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CTrapezid.cpp; sourceTree = "<group>"; };
 		F5B9349B2D99446B001B0215 /* CTrapezid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTrapezid.h; sourceTree = "<group>"; };
 		F5F30C292D93D8DF001924C0 /* ShottingGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ShottingGame; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,6 +150,8 @@
 				F57B1D112D9FA4DA00111703 /* CMissile.h */,
 				F5F30C462D93DD45001924C0 /* CTriangle.cpp */,
 				F5F30C492D93DD45001924C0 /* CTriangle.h */,
+				F5B34A952DA771E100A47FEE /* EnemyA.cpp */,
+				F5B34A982DA771EE00A47FEE /* EnemyA.h */,
 				F5B34A8F2DA6A2D100A47FEE /* CEnemy.cpp */,
 				F5B34A912DA6A2FC00A47FEE /* CEnemy.h */,
 				F5B34A922DA6B42C00A47FEE /* CStar.cpp */,
@@ -236,6 +241,7 @@
 				F5B9349A2D994457001B0215 /* CTrapezid.cpp in Sources */,
 				F5F30C542D93DD45001924C0 /* CQuad.cpp in Sources */,
 				F5F30C512D93DD45001924C0 /* wmhandler.cpp in Sources */,
+				F5B34A972DA771E100A47FEE /* EnemyA.cpp in Sources */,
 				F5B34A902DA6A2D100A47FEE /* CEnemy.cpp in Sources */,
 				F5F30C522D93DD45001924C0 /* CTriangle.cpp in Sources */,
 			);

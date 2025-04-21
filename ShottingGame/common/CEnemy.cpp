@@ -24,19 +24,33 @@ CEnemy::CEnemy()
     _mxTRS = glm::mat4(1.0f);
     _mxTransform = glm::mat4(1.0f);
     _mxFinal = glm::mat4(1.0f);
-    _vtxCount = 4;
-    _indexCount = 6;
-    _vtxAttrCount = 11;
-    _points = new GLfloat[_vtxCount * _vtxAttrCount] {
-        // ¶Ï∏m            // √C¶‚         // ™k¶V∂q       // ∂KπœÆyº–
-        -0.8f, -0.7f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-         0.8f, -0.7f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
-    };
-    _idx = new GLuint[_indexCount]{  0, 1, 2, 2, 3, 0 };
+    _vtxCount = 0;
+    _indexCount = 0;
+    _vtxAttrCount = 0;
+    _isDead = false;
+    _speed = 1.5f;
+    _hp = 1;
+    _state = Alive;
+    _explosionTimer = 0;
+    _dirX = (rand() % 2 == 0 ? 1.0f : -1.0f) * (0.5f + rand() % 100 / 100.0f);
+    _points = nullptr;
+    _idx = nullptr;
 
     setupVertexAttributes();
+    
+    _explosionvtxCount = 4;
+    _explosionidxCount = 6;
+    _explosionvtxAttrCount = 11;
+    _explosionPoints = new GLfloat[_explosionvtxCount * _explosionvtxAttrCount]{
+        // 這裡可以做偏移、顏色加強、放射狀改變等等
+        -0.6f, -0.6f, 0.0f, 1.0f, 0.3f, 0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+         0.6f, -0.4f, 0.0f, 0.3f, 1.0f, 0.3f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+         0.4f,  0.6f, 0.0f, 0.3f, 0.3f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -0.4f,  0.4f, 0.0f, 1.0f, 1.0f, 0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f
+    };
+
+    _explosionIdx = new GLuint[_explosionidxCount]{ 0, 1, 2, 2, 3, 0 };
+
 }
 
 CEnemy::~CEnemy()
@@ -45,8 +59,22 @@ CEnemy::~CEnemy()
     glDeleteBuffers(1, &_ebo);
     glDeleteVertexArrays(1, &_vao); //¶Aƒ¿©Ò VAO
     glDeleteProgram(_shaderProg);  //ƒ¿©Ò shader program
-    if (_points != NULL) delete[] _points;
-    if (_idx != NULL) delete[] _idx;
+    if (_points != NULL) {
+        delete[] _points;
+        _points = nullptr;
+    }
+    if (_idx != NULL){
+        delete[] _idx;
+        _idx = nullptr;
+    }
+    if (_explosionPoints != nullptr) {
+        delete[] _explosionPoints;
+        _explosionPoints = nullptr;
+    }
+    if (_explosionIdx != nullptr) {
+        delete[] _explosionIdx;
+        _explosionIdx = nullptr;
+    }
 }
 
 void CEnemy::setupVertexAttributes()
@@ -116,30 +144,79 @@ void CEnemy::setColor(glm::vec3 vColor)
 
 void CEnemy::draw()
 {
-    updateMatrix();
+    if (_state == Dead) return;
+
+    if (_state == Exploding) {
+        // 你可以畫個簡單的爆炸或先用不同顏色表示
+        drawExplosion();
+        return;
+    }
+    else if(_state == Alive){
+        // Alive 狀態畫正常模型
+        updateMatrix();
+        glUseProgram(_shaderProg);
+        glBindVertexArray(_vao);
+        glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+    }
+    
+}
+
+void CEnemy::drawExplosion() {
     glUseProgram(_shaderProg);
+    updateMatrix();
     glBindVertexArray(_vao);
-    glDrawElements(GL_TRIANGLES, _vtxCount, GL_UNSIGNED_INT, 0);
+
+    // 替換 VBO 資料
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * _explosionvtxCount * _explosionvtxAttrCount, _explosionPoints);
+
+    // 替換 EBO 資料（其實不變也可以）
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(GLuint) * _explosionidxCount, _explosionIdx);
+
+    glDrawElements(GL_TRIANGLES, _explosionidxCount, GL_UNSIGNED_INT, 0);
 }
 
 void CEnemy::update(float dt){
-    float range = 2.0f;
 
-        float dx = (rand() % 1000 / 1000.0f - 0.5f) * range * 0.1f;
-        float dy = (rand() % 1000 / 1000.0f - 0.5f) * range * 0.1f;
+    if (_state == Dead) return;
 
-        _pos.x += dx;
-        _pos.y += dy;
+    if (_state == Exploding) {
+        _explosionTimer -= dt;
+        if (_explosionTimer <= 0) {
+            _state = Dead;
+        }
+        return; // 爆炸中不更新移動
+    }
 
-        // 可選：限制不能走出範圍
-        _pos.x = std::clamp(_pos.x, -range, range);
-        _pos.y = std::clamp(_pos.y, -range, range);
+    // Alive 狀態的移動邏輯
+    if (_pos.y > 3.0f) {
+        _pos.y -= _speed * dt;
+    } else {
+        _pos.x += _dirX * dt;
+        if (_pos.x < -5.0f || _pos.x > 5.0f) {
+            _dirX = -_dirX;
+        }
+    }
+
+    setPos(_pos);
 }
 
-void CEnemy::setVtxCount(int vtxCount, int indexCount, int vtxAttrCount){
-    _vtxCount = vtxCount;
-    _indexCount = indexCount;
-    _vtxCount = vtxAttrCount;
+void CEnemy::setState(State state) { _state = state; }
+State CEnemy::getState() const { return _state; }
+
+bool CEnemy::isDead() const{
+    return _isDead;
+}
+
+void CEnemy::onHit(int damage){
+    if (_isDead) return;
+    _hp -= damage;
+    if (_hp <= 0) {
+        _isDead = true;  
+        _state = Exploding;
+        _explosionTimer = 1.5;
+    }
 }
 
 void CEnemy::setScale(glm::vec3 vScale)
@@ -217,6 +294,8 @@ glm::mat4 CEnemy::getModelMatrix() { return _mxFinal; }
 
 GLuint CEnemy::getShaderProgram() { return _shaderProg; }
 
+glm::vec3 CEnemy::getPos() const { return _pos; }
+
 void CEnemy::reset()
 {
     _scale = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -234,4 +313,7 @@ void CEnemy::reset()
     _mxRotation = glm::mat4(1.0f);
     _mxTransform = glm::mat4(1.0f);
     _mxFinal = glm::mat4(1.0f);
+    _isDead = false;
+    _speed = 0.4f;
+    _hp = 5;
 }

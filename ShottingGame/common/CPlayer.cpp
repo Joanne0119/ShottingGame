@@ -120,12 +120,12 @@ void CPlayer::update(float dt){
         }
     }
     // 每幀累積向下移動
-    _fireScale.y += 0.05f * dt;
-    _firePos[0].y -= 0.05f * dt;
-    _firePos[1].y -= 0.05f * dt;
+    _fireScale.y += 0.08f * dt;
+    _firePos[0].y -= 0.08f * dt;
+    _firePos[1].y -= 0.08f * dt;
 
     // 如果火焰移動到太下面，就重設回原點
-    if (_fireScale.y > 0.30f) {
+    if (_fireScale.y > 0.35f) {
         _fireScale.y = 0.25f;
         _firePos[0].y = -2.6f;
         _firePos[1].y = -2.6f;

@@ -8,9 +8,9 @@
 //   (11%) 敵人部分
 //      (2%)  有至少三種以上不同外形的敵人(不同的顏色)，基本的四方型不算在內
 //      (3%) 以物件導向的多型來控制所有的敵人
-//      (1%)  敵人可以不斷的產生，而且具有不同的顏色
+//   ✓   (1%)  敵人可以不斷的產生，而且具有不同的顏色
 //      (1%)  敵人能隨機朝向玩家發射子彈攻擊
-//      (2%)  戰鬥機發射的子彈可以打到敵人，而且敵人會消失
+//   ✓   (2%)  戰鬥機發射的子彈可以打到敵人，而且敵人會消失
 //      (2%)  有 BOSS 級的敵人，且至會根據被攻擊的多寡至少三種不同的狀態(外型改變或攻擊方式)可以切換
 //      (4%) (玩家部分)
 //      (2%)  能判斷玩家是否被打中 並做出合理的反應
@@ -27,6 +27,7 @@
 #include <fstream>
 #include <sstream>
 #include <list>
+#include <cstdlib>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -42,6 +43,8 @@
 #include "common/Cplayer.h"
 #include "common/CMissile.h"
 #include "common/CStar.h"
+#include "common/EnemyA.h"
+#include "common/CEnemy.h"
 #include "common/initshader.h"
 #include "common/arcball.h"
 #include "common/wmhandler.h"
@@ -63,6 +66,9 @@ CTrapezid* g_trap_body = nullptr;
 CQuad* g_quad_shild = nullptr;
 CPlayer* player = nullptr;
 Star* star = nullptr;
+std::vector<CEnemy*> enemies;
+
+static float spawnTimer = 0.0f;
 
 int starNumber = 50;
 glm::vec3 g_GDist[12];
@@ -80,17 +86,22 @@ void initCirclePoints() {
     }
 }
 
+void spawnEnemy();
+
 void loadScene(void){
     g_shaderProg = createShader("vshader21.glsl","fshader21.glsl");
+    
     star = new Star[starNumber];
     for (int i = 0; i <starNumber; i++) {
         star[i].setShaderID(g_shaderProg);
         star[i].setColor(glm::vec3(0.5f, 0.5f, 0.0f));
         star[i].setScale(glm::vec3(0.2f));  // 調整星星的大小
         star[i].setPos(glm::vec3(rand() % 20 - 10, rand() % 20 - 10, 0.0f));  // 隨機生成星星位置
-        star[i]._speed = 0.1f + static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        star[i]._speed = 0.6f + static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     }
+    
     player = new CPlayer(g_shaderProg);
+    
     initCirclePoints();
     g_quad_shild = new CQuad[12];
     for (int i = 0; i < 12; i++)
@@ -118,6 +129,7 @@ void render(void){
     for (int i = 0; i < starNumber; i++) star[i].draw();
     for (int i = 0; i < 12; i++) g_quad_shild[i].draw();
     player->draw();
+    for (auto e : enemies) e->draw();
 }
 
 // MARK: - update
@@ -138,9 +150,65 @@ void update(float dt)
         for (int i = 0; i < starNumber; i++) star[i].update(dt);
         player->update(dt);
     //    std::cout << player->getPos().x << "\n";
+        
+        for (auto enemyIt = enemies.begin(); enemyIt != enemies.end(); ) {
+            CEnemy* enemy = *enemyIt;
+
+            enemy->update(dt);  // 👈 更新計時器或狀態
+
+            if (enemy->getState() == Dead) {
+                delete enemy;
+                enemyIt = enemies.erase(enemyIt);
+            } else {
+                ++enemyIt;
+            }
+        }
+    
+    
+        spawnTimer += dt;
+        if (spawnTimer > 1.5f) { // 每 1.5 秒產生一個
+            spawnEnemy();
+            spawnTimer = 0.0f;
+        }
+        // 拿到玩家的子彈清單（是 std::list<CMissile*>）
+        auto& missiles = player->getMissiles();
+
+        for (auto missileIt = missiles.begin(); missileIt != missiles.end(); ) {
+            CMissile* missile = *missileIt;
+            bool hit = false;
+
+            for (auto enemyIt = enemies.begin(); enemyIt != enemies.end(); ) {
+                CEnemy* enemy = *enemyIt;
+
+                // 碰撞邏輯（使用 glm::distance 或你的判斷方式）
+                float dist = glm::distance(missile->getPos(), enemy->getPos());
+                if (dist < 0.3f) { // 根據實際模型大小調整
+                    enemy->onHit(1); // 扣血
+                    hit = true;
+
+                    // 如果敵人死了，移除敵人
+                    if (enemy->isDead()) {
+                        enemy->setState(Exploding);
+                        ++enemyIt;
+                    } else {
+                        ++enemyIt;
+                    }
+
+                    break; // 一顆子彈只打中一個敵人
+                } else {
+                    ++enemyIt;
+                }
+            }
+
+            if (hit) {
+                delete missile;
+                missileIt = missiles.erase(missileIt);
+            } else {
+                ++missileIt;
+            }
+        }
     }
-    
-    
+
 }
 
 // MARK: - release
@@ -150,6 +218,38 @@ void releaseAll()
     if(g_quad_shild != nullptr) delete [] g_quad_shild;
     
     if(player != nullptr) delete player;
+    
+    for (auto e : enemies) {
+        if (e != nullptr) delete e;
+    }
+    enemies.clear();
+}
+
+
+void spawnEnemy() {
+//    int type = rand() % 3; // 假設三種敵人類型
+    int type = 0;
+
+    CEnemy* newEnemy = nullptr;
+    switch (type) {
+        case 0:
+            newEnemy = new EnemyA();
+            break;
+        case 1:
+//            newEnemy = new EnemyB();  //你需要先定義 EnemyB 類別
+            break;
+        case 2:
+//            newEnemy = new BossEnemy(); // 同理定義 BossEnemy
+            break;
+    }
+
+    if (newEnemy) {
+        newEnemy->setShaderID(g_shaderProg);
+        newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
+        newEnemy->setColor(glm::vec3(rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX)));
+        newEnemy->setScale(glm::vec3(0.4f));
+        enemies.push_back(newEnemy);
+    }
 }
 
 int main()
