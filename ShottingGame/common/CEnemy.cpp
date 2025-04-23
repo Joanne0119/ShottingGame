@@ -38,59 +38,45 @@ CEnemy::CEnemy()
     _fireRate = 0.8f;
     _fireCooldown = 0.0f;
     
-//    _explosionvtxCount = 16;
-//    _explosionidxCount = 48;
+
     _explosionvtxAttrCount = 11;
-    _explosionvtxCount = 8;
-    _explosionidxCount = 18;
+    _explosionvtxCount = 16;
+    _explosionidxCount = 42;
    
     _explosionPoints = new GLfloat[_explosionvtxCount * _explosionvtxAttrCount]{
-//        // ¶Ï∏m            // √C¶‚         // ™k¶V∂q       // ∂KπœÆyº–
-//        -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-//        -0.35f, -0.35f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-//        -0.10f, -0.50f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-//        0.10f, -0.50f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-//        0.35f, -0.35f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-//        0.50f,  0.00f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-//        0.35f,  0.35f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
-//        0.10f,  0.50f,  0.00f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
-//        -0.10f,  0.50f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-//        -0.35f,  0.35f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-//        -0.50f,  0.00f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-//        -0.35f, -0.35f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-//        0.10f, -0.50f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-//        0.35f, -0.35f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-//        0.50f,  0.00f,  0.00f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
-//        0.35f,  0.35f,  0.00f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
-        
-        -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-        -0.1f, -0.1f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-         0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-         0.1f, -0.1f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-         0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-         0.1f,  0.1f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-         0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
-        -0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
+        0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+        0.2f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+         0.7f, -0.7f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+         0.5f, -0.2f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+         1.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+         0.5f,  0.2f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+         0.7f,  0.7f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
+        0.2f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
+        0.0f,  1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.2f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.7f,  0.7f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f,  0.2f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f,  -0.2f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.7f,  -0.7f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.2f,  -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f
     };
 
-    _explosionIdx = new GLuint[_explosionidxCount]{ 
-//        0, 1, 8,
-//        1, 2, 9,
-//        2, 3, 10,
-//        3, 4, 11,
-//        4, 5, 12,
-//        5, 6, 13,
-//        6, 7, 14,
-//        7, 8, 15,
-//        8, 9, 0,
-//        9, 10, 1,
-//        10, 11, 2,
-//        11, 12, 3,
-//        12, 13, 4,
-//        13, 14, 5,
-//        14, 15, 6,
-//        15, 0, 7
-        0, 1, 7, 1 ,2 ,3, 3, 4, 5, 5, 6, 7, 7, 3, 5, 7, 1, 3
+    _explosionIdx = new GLuint[_explosionidxCount]{
+        0, 1, 15,
+        1, 2, 3,
+        3, 4, 5,
+        5, 6, 7,
+        7, 8, 9,
+        9, 10, 11,
+        11, 12, 13,
+        13, 14, 15,
+        15, 1, 3,
+        15, 3, 5,
+        15, 5, 7,
+        15, 7, 9,
+        15, 9, 11,
+        15, 11, 13
     };
     
     setupVertexAttributes();
@@ -223,6 +209,15 @@ void CEnemy::drawExplosion() {
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(GLuint) * _explosionidxCount, _explosionIdx);
 
     glDrawElements(GL_TRIANGLES, _explosionidxCount, GL_UNSIGNED_INT, 0);
+    
+    _color = glm::vec3(0.7f, 0.4f, 0.0f);
+    for (int i = 0; i < _explosionvtxCount; i++) {
+        _explosionPoints[i * _explosionvtxAttrCount + COLOR_OFFSET ]  = _color.x;
+        _explosionPoints[i * _explosionvtxAttrCount + COLOR_OFFSET+1] = _color.y;
+        _explosionPoints[i * _explosionvtxAttrCount + COLOR_OFFSET+2] = _color.z;
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glBufferData(GL_ARRAY_BUFFER, _explosionvtxCount * _explosionvtxAttrCount * sizeof(_explosionPoints), _explosionPoints, GL_STATIC_DRAW);
 }
 
 void CEnemy::update(float dt){
@@ -303,7 +298,7 @@ void CEnemy::onHit(int damage){
     if (_hp <= 0) {
         _isDead = true;  
         _state = Exploding;
-        _explosionTimer = 1.5;
+        _explosionTimer = 1.0;
     }
 }
 
