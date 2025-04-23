@@ -1,16 +1,15 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "EnemyA.h"
+#include "EnemyB.h"
 
-EnemyA::EnemyA() : CEnemy()
+EnemyB::EnemyB() : CEnemy()
 {
     _vtxCount = 8;
     _indexCount = 18;
     _vtxAttrCount = 11;
 
     _points = new GLfloat[_vtxCount * _vtxAttrCount]{
-        // ¶Ï∏m            // √C¶‚         // ™k¶V∂q       // ∂KπœÆyº–
         -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
         -0.1f, -0.1f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
          0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
@@ -21,16 +20,16 @@ EnemyA::EnemyA() : CEnemy()
         -0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
     };
     _idx = new GLuint[_indexCount]{
-        0, 1, 2,
-        2, 3, 4,
-        4, 5, 6,
-        6, 7, 0,
-        0, 2, 4,
-        4, 6, 0};
+    0, 1, 2,
+    2, 3, 4,
+    4, 5, 6,
+    6, 7, 0,
+    0, 2, 4,
+    4, 6, 0};
     setupVertexAttributes();
 };
 
-EnemyA::~EnemyA()
+EnemyB::~EnemyB()
 {
     glDeleteBuffers(1, &_vbo);  //•˝ƒ¿©Ò VBO ªP EBO
     glDeleteBuffers(1, &_ebo);
@@ -45,29 +44,25 @@ EnemyA::~EnemyA()
     }
 }
 
-void EnemyA::draw()
+void EnemyB::draw()
 {
     CEnemy::draw();
 }
 
-void EnemyA::drawExplosion()
+void EnemyB::drawExplosion()
 {
     CEnemy::drawExplosion();
-
 }
 
 
-void EnemyA::update(float dt)
+void EnemyB::update(float dt)
 {
     CEnemy::update(dt);
 }
 
-void EnemyA::shoot(){
-    CEnemy::shoot();
-}
 
 
-void EnemyA::reset()
+void EnemyB::reset()
 {
     CEnemy::reset();
 }

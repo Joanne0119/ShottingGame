@@ -1,5 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <list>
+#include "CMissile.h"
 
 enum State { Alive, Hurt1, Hurt2, Hurt3, Exploding, Dead };
 
@@ -31,6 +33,10 @@ public:
     bool isDead() const;
     void setState(State state);
     State getState() const;
+    //shoot
+    virtual void shoot();
+    std::list<CMissile*>& getMissiles(); // 回傳子彈清單
+    void printMissiles();
     
 
 protected:
@@ -51,6 +57,7 @@ protected:
     int _explosionvtxAttrCount;
     GLfloat* _explosionPoints;
     GLuint* _explosionIdx;
+    
     //Enemy
     bool _isDead;
     float _speed;
@@ -58,6 +65,10 @@ protected:
     float _dirX;
     float _explosionTimer;
     State _state;
+    //shoot
+    std::list<CMissile*> _missiles;
+    GLfloat _fireRate;
+    GLfloat _fireCooldown;
     
     glm::vec3 _color;
     glm::vec3 _scale;    // 模型的縮放值

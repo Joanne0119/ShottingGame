@@ -16,6 +16,7 @@ public:
     void setShaderID(GLuint shaderID);
     void draw();
     void update(float dt);
+    void updateEnemy(float dt);
     void reset();
     void setColor(glm::vec3 vColor); // 設定模型的顏色
     void setScale(glm::vec3 vScale); // 設定模型的縮放比

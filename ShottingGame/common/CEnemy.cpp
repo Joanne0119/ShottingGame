@@ -35,21 +35,65 @@ CEnemy::CEnemy()
     _dirX = (rand() % 2 == 0 ? 1.0f : -1.0f) * (0.5f + rand() % 100 / 100.0f);
     _points = nullptr;
     _idx = nullptr;
-
-    setupVertexAttributes();
+    _fireRate = 0.8f;
+    _fireCooldown = 0.0f;
     
-    _explosionvtxCount = 4;
-    _explosionidxCount = 6;
+//    _explosionvtxCount = 16;
+//    _explosionidxCount = 48;
     _explosionvtxAttrCount = 11;
+    _explosionvtxCount = 8;
+    _explosionidxCount = 18;
+   
     _explosionPoints = new GLfloat[_explosionvtxCount * _explosionvtxAttrCount]{
-        // 這裡可以做偏移、顏色加強、放射狀改變等等
-        -0.6f, -0.6f, 0.0f, 1.0f, 0.3f, 0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.6f, -0.4f, 0.0f, 0.3f, 1.0f, 0.3f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-         0.4f,  0.6f, 0.0f, 0.3f, 0.3f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        -0.4f,  0.4f, 0.0f, 1.0f, 1.0f, 0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f
+//        // ¶Ï∏m            // √C¶‚         // ™k¶V∂q       // ∂KπœÆyº–
+//        -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+//        -0.35f, -0.35f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+//        -0.10f, -0.50f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+//        0.10f, -0.50f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+//        0.35f, -0.35f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+//        0.50f,  0.00f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+//        0.35f,  0.35f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
+//        0.10f,  0.50f,  0.00f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
+//        -0.10f,  0.50f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+//        -0.35f,  0.35f,  0.00f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+//        -0.50f,  0.00f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+//        -0.35f, -0.35f,  0.00f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+//        0.10f, -0.50f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+//        0.35f, -0.35f,  0.00f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+//        0.50f,  0.00f,  0.00f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
+//        0.35f,  0.35f,  0.00f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
+        
+        -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+        -0.1f, -0.1f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
+         0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+         0.1f, -0.1f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
+         0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+         0.1f,  0.1f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
+         0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // •™§W
+        -0.1f,  0.1f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
     };
 
-    _explosionIdx = new GLuint[_explosionidxCount]{ 0, 1, 2, 2, 3, 0 };
+    _explosionIdx = new GLuint[_explosionidxCount]{ 
+//        0, 1, 8,
+//        1, 2, 9,
+//        2, 3, 10,
+//        3, 4, 11,
+//        4, 5, 12,
+//        5, 6, 13,
+//        6, 7, 14,
+//        7, 8, 15,
+//        8, 9, 0,
+//        9, 10, 1,
+//        10, 11, 2,
+//        11, 12, 3,
+//        12, 13, 4,
+//        13, 14, 5,
+//        14, 15, 6,
+//        15, 0, 7
+        0, 1, 7, 1 ,2 ,3, 3, 4, 5, 5, 6, 7, 7, 3, 5, 7, 1, 3
+    };
+    
+    setupVertexAttributes();
 
 }
 
@@ -157,6 +201,10 @@ void CEnemy::draw()
         glUseProgram(_shaderProg);
         glBindVertexArray(_vao);
         glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+        
+        for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
+            (*it)->draw();
+        }
     }
     
 }
@@ -178,6 +226,17 @@ void CEnemy::drawExplosion() {
 }
 
 void CEnemy::update(float dt){
+    _fireCooldown -= dt;
+    
+    for (auto it = _missiles.begin(); it != _missiles.end(); ) {
+        (*it)->updateEnemy(dt);
+        if ((*it)->isOutOfBounds()) {
+            delete *it;               // 釋放記憶體
+            it = _missiles.erase(it); // 移除元素
+        } else {
+            ++it;
+        }
+    }
 
     if (_state == Dead) return;
 
@@ -198,9 +257,38 @@ void CEnemy::update(float dt){
             _dirX = -_dirX;
         }
     }
+    if (_fireCooldown <= 0.0f) {
+        shoot();
+        printMissiles();
+    }
 
     setPos(_pos);
 }
+
+void CEnemy::shoot() {
+    if (_fireCooldown <= 0.0f) {
+        auto missile = new CMissile(_pos - glm::vec3(0.0f, 0.5f, 0.0f), 5.0f);
+        missile->setShaderID(_shaderProg);
+        missile->setColor(glm::vec3(0.5f, 0.3f, 0.3f));
+        missile->setScale(glm::vec3(0.1f,0.1f,0.1f));
+        missile->setRotY(180);
+        _missiles.push_back(missile);
+        _fireCooldown = _fireRate;
+    }
+}
+
+std::list<CMissile*>& CEnemy::getMissiles() {
+    return _missiles;
+}
+
+void CEnemy::printMissiles() {
+    for (auto* missile : _missiles) {
+        glm::vec3 position = missile->getPos();
+        std::cout << "Missile position: ("
+                  << position.x << ", " << position.y << ", " << position.z << ")\n";
+    }
+}
+
 
 void CEnemy::setState(State state) { _state = state; }
 State CEnemy::getState() const { return _state; }

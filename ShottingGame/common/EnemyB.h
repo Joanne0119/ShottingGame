@@ -1,14 +1,14 @@
 #pragma once
 #include "CEnemy.h"
 
-class EnemyA: public CEnemy
+class EnemyB: public CEnemy
 {
 public:
-    EnemyA();
-    virtual ~EnemyA();
+    EnemyB();
+    virtual ~EnemyB();
     virtual void draw() override;
     virtual void drawExplosion() override;
     virtual void reset() override;
     virtual void update(float dt) override;
-    virtual void shoot() override;
+    
 };

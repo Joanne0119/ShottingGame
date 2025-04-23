@@ -44,6 +44,7 @@
 #include "common/CMissile.h"
 #include "common/CStar.h"
 #include "common/EnemyA.h"
+#include "common/EnemyB.h"
 #include "common/CEnemy.h"
 #include "common/initshader.h"
 #include "common/arcball.h"
@@ -155,6 +156,7 @@ void update(float dt)
             CEnemy* enemy = *enemyIt;
 
             enemy->update(dt);  // 👈 更新計時器或狀態
+//            enemy->shoot();
 
             if (enemy->getState() == Dead) {
                 delete enemy;
@@ -166,7 +168,7 @@ void update(float dt)
     
     
         spawnTimer += dt;
-        if (spawnTimer > 1.5f) { // 每 1.5 秒產生一個
+        if (spawnTimer > 2.0f) { // 每 1.5 秒產生一個
             spawnEnemy();
             spawnTimer = 0.0f;
         }
@@ -227,29 +229,38 @@ void releaseAll()
 
 
 void spawnEnemy() {
-//    int type = rand() % 3; // 假設三種敵人類型
-    int type = 0;
+    int type = rand() % 2; // 假設三種敵人類型
+//    int type = 0;
 
     CEnemy* newEnemy = nullptr;
     switch (type) {
         case 0:
             newEnemy = new EnemyA();
+            if (newEnemy) {
+                newEnemy->setShaderID(g_shaderProg);
+                newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
+                newEnemy->setColor(glm::vec3(0.8f, 0.8f, 0.1f));
+                newEnemy->setScale(glm::vec3(0.4f));
+                enemies.push_back(newEnemy);
+            }
+            
             break;
         case 1:
-//            newEnemy = new EnemyB();  //你需要先定義 EnemyB 類別
+            newEnemy = new EnemyB();  //你需要先定義 EnemyB 類別
+            if (newEnemy) {
+                newEnemy->setShaderID(g_shaderProg);
+                newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
+                newEnemy->setColor(glm::vec3(0.0f, 0.6f, 0.2f));
+                newEnemy->setScale(glm::vec3(0.6f));
+                enemies.push_back(newEnemy);
+            }
             break;
         case 2:
 //            newEnemy = new BossEnemy(); // 同理定義 BossEnemy
             break;
     }
 
-    if (newEnemy) {
-        newEnemy->setShaderID(g_shaderProg);
-        newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
-        newEnemy->setColor(glm::vec3(rand() / float(RAND_MAX), rand() / float(RAND_MAX), rand() / float(RAND_MAX)));
-        newEnemy->setScale(glm::vec3(0.4f));
-        enemies.push_back(newEnemy);
-    }
+    
 }
 
 int main()

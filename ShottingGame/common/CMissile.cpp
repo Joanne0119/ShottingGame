@@ -52,7 +52,7 @@ CMissile::~CMissile()
 
 bool CMissile::isOutOfBounds()
 {
-    return _pos.y > 8.0f;
+    return (_pos.y > 8.0f) || _pos.y < -8.0f;
 }
 
 void CMissile::setupVertexAttributes()
@@ -131,6 +131,12 @@ void CMissile::draw()
 void CMissile::update(float dt)
 {
     _pos += glm::vec3(0.0f, _speed * dt, 0.0f); // 假設 speed 是每 frame 的速度
+    setPos(_pos);
+}
+
+void CMissile::updateEnemy(float dt)
+{
+    _pos -= glm::vec3(0.0f, _speed * dt, 0.0f); // 假設 speed 是每 frame 的速度
     setPos(_pos);
 }
 

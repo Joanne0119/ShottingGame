@@ -153,7 +153,7 @@ void CPlayer::shoot() {
     if (_fireCooldown <= 0.0f) {
         auto missile = new CMissile(_topPos + _pos + glm::vec3(0.0f, 0.5f, 0.0f), 3.0f);
         missile->setShaderID(_shaderProg);
-        missile->setColor(glm::vec3(0.5f, 0.3f, 0.3f));
+        missile->setColor(glm::vec3(0.5f, 0.5f, 0.8f));
         missile->setScale(glm::vec3(0.1f,0.1f,0.1f));
         _missiles.push_back(missile);
         _fireCooldown = _fireRate;
