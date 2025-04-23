@@ -7,9 +7,9 @@
 //   ✓   (2%)  能產生有速度感的背景物件，或是其他裝飾性的物件
 //   (11%) 敵人部分
 //      (2%)  有至少三種以上不同外形的敵人(不同的顏色)，基本的四方型不算在內
-//      (3%) 以物件導向的多型來控制所有的敵人
+//   ✓   (3%) 以物件導向的多型來控制所有的敵人
 //   ✓   (1%)  敵人可以不斷的產生，而且具有不同的顏色
-//      (1%)  敵人能隨機朝向玩家發射子彈攻擊
+//   ✓   (1%)  敵人能隨機朝向玩家發射子彈攻擊
 //   ✓   (2%)  戰鬥機發射的子彈可以打到敵人，而且敵人會消失
 //      (2%)  有 BOSS 級的敵人，且至會根據被攻擊的多寡至少三種不同的狀態(外型改變或攻擊方式)可以切換
 //      (4%) (玩家部分)
@@ -45,6 +45,7 @@
 #include "common/CStar.h"
 #include "common/EnemyA.h"
 #include "common/EnemyB.h"
+#include "common/EnemyC.h"
 #include "common/CEnemy.h"
 #include "common/initshader.h"
 #include "common/arcball.h"
@@ -168,7 +169,7 @@ void update(float dt)
     
     
         spawnTimer += dt;
-        if (spawnTimer > 2.0f) { // 每 1.5 秒產生一個
+        if (spawnTimer > 1.8f) { // 每 1.5 秒產生一個
             spawnEnemy();
             spawnTimer = 0.0f;
         }
@@ -229,7 +230,7 @@ void releaseAll()
 
 
 void spawnEnemy() {
-    int type = rand() % 2; // 假設三種敵人類型
+    int type = rand() % 3; // 假設三種敵人類型
 //    int type = 0;
 
     CEnemy* newEnemy = nullptr;
@@ -257,6 +258,14 @@ void spawnEnemy() {
             break;
         case 2:
 //            newEnemy = new BossEnemy(); // 同理定義 BossEnemy
+            newEnemy = new EnemyC();  //你需要先定義 EnemyB 類別
+            if (newEnemy) {
+                newEnemy->setShaderID(g_shaderProg);
+                newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
+                newEnemy->setColor(glm::vec3(0.8f, 0.3f, 0.2f));
+                newEnemy->setScale(glm::vec3(0.7f));
+                enemies.push_back(newEnemy);
+            }
             break;
     }
 

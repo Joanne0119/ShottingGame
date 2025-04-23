@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F560DCFE2DB8C69D007B7340 /* EnemyC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F560DCFD2DB8C69D007B7340 /* EnemyC.cpp */; };
+		F560DD012DB8C6BD007B7340 /* EnemyBoss.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */; };
 		F57B1D102D9FA4C500111703 /* CMissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F57B1D0F2D9FA4C500111703 /* CMissile.cpp */; };
 		F57B1D132DA392F200111703 /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F57B1D122DA392F200111703 /* CPlayer.cpp */; };
 		F5B34A902DA6A2D100A47FEE /* CEnemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5B34A8F2DA6A2D100A47FEE /* CEnemy.cpp */; };
@@ -40,6 +42,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F560DCFD2DB8C69D007B7340 /* EnemyC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyC.cpp; sourceTree = "<group>"; };
+		F560DCFF2DB8C6AC007B7340 /* EnemyC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyC.h; sourceTree = "<group>"; };
+		F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyBoss.cpp; sourceTree = "<group>"; };
+		F560DD022DB8C6D0007B7340 /* EnemyBoss.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyBoss.h; sourceTree = "<group>"; };
 		F57B1D0F2D9FA4C500111703 /* CMissile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMissile.cpp; sourceTree = "<group>"; };
 		F57B1D112D9FA4DA00111703 /* CMissile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMissile.h; sourceTree = "<group>"; };
 		F57B1D122DA392F200111703 /* CPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayer.cpp; sourceTree = "<group>"; };
@@ -153,6 +159,10 @@
 				F57B1D112D9FA4DA00111703 /* CMissile.h */,
 				F5F30C462D93DD45001924C0 /* CTriangle.cpp */,
 				F5F30C492D93DD45001924C0 /* CTriangle.h */,
+				F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */,
+				F560DD022DB8C6D0007B7340 /* EnemyBoss.h */,
+				F560DCFD2DB8C69D007B7340 /* EnemyC.cpp */,
+				F560DCFF2DB8C6AC007B7340 /* EnemyC.h */,
 				F5B34ABE2DB61CCB00A47FEE /* EnemyB.cpp */,
 				F5B34AC02DB61CE300A47FEE /* EnemyB.h */,
 				F5B34A952DA771E100A47FEE /* EnemyA.cpp */,
@@ -239,7 +249,9 @@
 				F5F30C502D93DD45001924C0 /* initShader.cpp in Sources */,
 				F57B1D102D9FA4C500111703 /* CMissile.cpp in Sources */,
 				F5F30C552D93DD45001924C0 /* arcball.cpp in Sources */,
+				F560DD012DB8C6BD007B7340 /* EnemyBoss.cpp in Sources */,
 				F5B34A932DA6B42C00A47FEE /* CStar.cpp in Sources */,
+				F560DCFE2DB8C69D007B7340 /* EnemyC.cpp in Sources */,
 				F5F30C532D93DD45001924C0 /* CPenta.cpp in Sources */,
 				F57B1D132DA392F200111703 /* CPlayer.cpp in Sources */,
 				F5F30C602D93E2CC001924C0 /* GamePlay.cpp in Sources */,
