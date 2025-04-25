@@ -44,6 +44,9 @@ public:
     void setState(PlayerState::State state);
     PlayerState::State getState() const;
     int getHp();
+    
+    void setStyle(PlayerState::Style style);
+    PlayerState::Style getStyle() const;
 
 private:
     //action
@@ -51,6 +54,7 @@ private:
     int _hp;
     int _maxHp;
     PlayerState::State _state;
+    PlayerState::Style _style;
     float _hurtTimer;
     
     CTriangle* top;

@@ -59,6 +59,7 @@ CPlayer::CPlayer(GLint shaderProg) {
     _hp = 5;
     _maxHp = 5;
     _state = PlayerState::Alive;
+    _style = PlayerState::Style1;
     _hurtTimer = 0;
     
     top = new CTriangle;
@@ -159,72 +160,145 @@ void CPlayer::draw()
     for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
         (*it)->draw();
     }
-
-    if (_state == PlayerState::Hurt1) {
-        // 你可以畫個簡單的爆炸或先用不同顏色表示
-        top->draw();
-        body->draw();
-        wings->draw();
-        window->draw();
-        bottom->draw();
-        fire[0].draw();
-        fire[1].draw();
-        drawHurt1();
-        return;
-    }
-    else if(_state == PlayerState::Hurt2) {
-        // 你可以畫個簡單的爆炸或先用不同顏色表示
-        top->draw();
-        body->draw();
-        wings->draw();
-        window->draw();
-        bottom->draw();
-        fire[0].draw();
-        fire[1].draw();
-        drawHurt2();
-        return;
-    }
-    else if(_state == PlayerState::Alive){
-        // Alive 狀態畫正常模型
-        top->draw();
-        body->draw();
-        wings->draw();
-        window->draw();
-        bottom->draw();
-        fire[0].draw();
-        fire[1].draw();
-    }
-}
-
-void CPlayer::drawHurt1()
-{
-    glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
-    glm::vec3 _bodyRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
-    glm::vec3 _wingsRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
-    glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
-    glm::vec3 _bottomRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
-    glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+    //MARK: - Style1
     
-    setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
-
-}
-
-void CPlayer::drawHurt2()
-{
-    glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
-    glm::vec3 _bodyRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
-    glm::vec3 _wingsRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
-    glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
-    glm::vec3 _bottomRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
-    glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+    if (_style == PlayerState::Style1){
+        top->draw();
+        body->draw();
+        wings->draw();
+        window->draw();
+        bottom->draw();
+        fire[0].draw();
+        fire[1].draw();
+        if (_state == PlayerState::Hurt1) {
+            glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bodyRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _wingsRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bottomRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+            
+            setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+            
+        }
+        else if(_state == PlayerState::Hurt2) {
+            glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bodyRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _wingsRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bottomRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+            
+            setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+            
+        }
+    }
+    //MARK: - Style2
+    else if(_style == PlayerState::Style2){
+        setPos(
+               glm::vec3(-0.6f, -2.15f, 0.0f),
+               glm::vec3(0.0f, -1.5f, 0.0f),
+               glm::vec3(0.0f, -1.9f, 0.0f),
+               glm::vec3(0.0f, -1.5f, 0.0f),
+               glm::vec3(0.6f, -2.15f, 0.0f),
+               glm::vec3(-0.6f, -2.3f, 0.0f),
+               glm::vec3(0.6f, -2.3f, 0.0f));
+        
+        setColor(glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.28f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.8f, 0.25f, 0.0f));
+        setScale(
+                 glm::vec3(0.9f, 0.25f, 1.0f),
+                 glm::vec3(0.6f, 0.4f, 1.0f),
+                 glm::vec3(1.3f, 0.25f, 1.0f),
+                 glm::vec3(0.15f, 0.175f, 1.0f),
+                 glm::vec3(0.9f, 0.25f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 1.0f));
+        if (_state == PlayerState::Hurt1) {
+            glm::vec3 _topRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _bodyRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _wingsRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bottomRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+            
+            setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+        }
+        else if(_state == PlayerState::Hurt2) {
+            glm::vec3 _topRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _bodyRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _wingsRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bottomRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+            
+            setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+        }
+    }
+    else if(_style == PlayerState::Style3){
+        setPos(
+               glm::vec3(-0.39, -1.35f, 0.0f),
+               glm::vec3(0.0f, -1.6f, 0.0f),
+               glm::vec3(0.0f, -2.0f, 0.0f),
+               glm::vec3(0.0f, -1.6f, 0.0f),
+               glm::vec3(0.39f, -1.35f, 0.0f),
+               glm::vec3(0.0f, -2.4f, 0.0f),
+               glm::vec3(0.0f, -2.7f, 0.0f));
+        
+        setColor(glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.28f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.8f, 0.25f, 0.0f));
+        setScale(
+                 glm::vec3(0.4f, 0.2f, 1.0f),
+                 glm::vec3(0.6f, 0.4f, 1.0f),
+                 glm::vec3(0.5f, 0.3f, 1.0f),
+                 glm::vec3(0.15f, 0.1f, 1.0f),
+                 glm::vec3(0.4f, 0.2f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 1.0f));
+        if (_state == PlayerState::Hurt1) {
+            glm::vec3 _topRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _bodyRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _wingsRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bottomRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+            
+            setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+        }
+        else if(_state == PlayerState::Hurt2) {
+            glm::vec3 _topRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+            glm::vec3 _bodyRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _wingsRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+            glm::vec3 _bottomRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+            glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+            
+            setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+        }
+    }
+    top->draw();
+    body->draw();
+    wings->draw();
+    window->draw();
+    bottom->draw();
+    fire[0].draw();
+    fire[1].draw();
     
-    setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
-
+    
 }
 
 void CPlayer::shoot() {
+    glm::vec3 currentPos;
+    if(_style == PlayerState::Style1) currentPos = _topPos;
+    else if (_style == PlayerState::Style2 || _style == PlayerState::Style3) currentPos = _bodyPos;
     if (_fireCooldown <= 0.0f) {
-        auto missile = new CMissile(_topPos + _pos + glm::vec3(0.0f, 0.5f, 0.0f), 3.0f);
+        auto missile = new CMissile(currentPos + _pos + glm::vec3(0.0f, 0.5f, 0.0f), 3.0f);
         missile->setShaderID(_shaderProg);
         missile->setColor(glm::vec3(0.5f, 0.5f, 0.8f));
         missile->setScale(glm::vec3(0.1f,0.1f,0.1f));
@@ -247,6 +321,9 @@ void CPlayer::printMissiles() {
 
 void CPlayer::setState(PlayerState::State state) { _state = state; }
 PlayerState::State CPlayer::getState() const { return _state; }
+
+void CPlayer::setStyle(PlayerState::Style style) { _style = style; }
+PlayerState::Style CPlayer::getStyle() const { return _style; }
 
 bool CPlayer::isDead() const{
     return _isDead;
@@ -297,12 +374,12 @@ void CPlayer::setColor(glm::vec3 vTopColor, glm::vec3 vBodyColor, glm::vec3 vWin
 
 void CPlayer::setScale(glm::vec3 vTopScale, glm::vec3 vBodyScale, glm::vec3 vWingsScale, glm::vec3 vWindowScale, glm::vec3 vBottomScale, glm::vec3 vFireScale)
 {
-    vTopScale = _topScale;
-    vBodyScale = _bodyScale;
-    vWingsScale = _wingsScale;
-    vWindowScale = _windowScale;
-    vBottomScale = _bottomScale;
-    vFireScale = _fireScale;
+    _topScale = vTopScale;
+    _bodyScale = vBodyScale;
+    _wingsScale = vWingsScale;
+    _windowScale = vWindowScale;
+    _bottomScale = vBottomScale;
+    _fireScale = vFireScale;
     
     _bScale = true;
     top->setScale(vTopScale);
@@ -379,15 +456,13 @@ void CPlayer::setPos(glm::vec3 _vPos){
 void CPlayer::setPos(glm::vec3 vTopPos, glm::vec3 vBodyPos, glm::vec3 vWingsPos, glm::vec3 vWindowPos, glm::vec3 vBottomPos, glm::vec3 vFirePos1, glm::vec3 vFirePos2)
 {
     _bPos = true;
-    vTopPos = _topPos;
-    vBodyPos = _bodyPos;
-    vWingsPos = _wingsPos;
-    vWindowPos = _windowPos;
-    vBottomPos = _bottomPos;
-    vFirePos1 = _firePos[0];
-    vFirePos2 = _firePos[1];
-    
-    _bScale = true;
+    _topPos = vTopPos;
+    _bodyPos = vBodyPos;
+    _wingsPos = vWingsPos;
+    _windowPos = vWindowPos;
+    _bottomPos = vBottomPos;
+    _firePos[0] = vFirePos1;
+    _firePos[1] = vFirePos2;
     top->setPos(vTopPos);
     body->setPos(vBodyPos);
     wings->setPos(vWingsPos);
