@@ -194,7 +194,7 @@ GLuint CQuad::getShaderProgram() { return _shaderProg; }
 
 glm::vec3 CQuad::getPos() const {
     
-    std::cout << "square ("<< _pos.x << ',' << _pos.y << ',' << _pos.z << ')' << std::endl;
+//    std::cout << "square ("<< _pos.x << ',' << _pos.y << ',' << _pos.z << ')' << std::endl;
     return _pos;
 }
 

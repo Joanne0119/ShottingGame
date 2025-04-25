@@ -171,6 +171,11 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
     
     if(gameStart){
         player->shoot();
+        if(player->getState() == PlayerState::Dead){
+            
+            gameStart = !gameStart;
+            g_bMoving = !g_bMoving;
+        }
     }
 #endif
 }

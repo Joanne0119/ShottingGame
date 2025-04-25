@@ -1,10 +1,10 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "CMissile.h"
+#include "CHeart.h"
 #include "initshader.h"
 
-CMissile::CMissile()
+CHeart::CHeart()
 {
     _vao = 0; _vbo = 0; _ebo = 0;
     _shaderProg = 0;
@@ -13,7 +13,6 @@ CMissile::CMissile()
     _pos = glm::vec3(0.0f, 0.0f, 0.0f);
     _rotX = 0.0f; _rotY = 0.0f; _rotZ = 0.0f;
     _rotAxis = 0;
-    _speed = 0.1f;
     _bRotation = _bScale = _bPos = _bTransform = _bOnTransform = false;
     _mxScale = glm::mat4(1.0f);
     _mxPos = glm::mat4(1.0f);
@@ -24,23 +23,21 @@ CMissile::CMissile()
     _mxTRS = glm::mat4(1.0f);
     _mxTransform = glm::mat4(1.0f);
     _mxFinal = glm::mat4(1.0f);
-    _points = new GLfloat[MISSILE_VTX_COUNT * MISSILE_VTX_ATTR_COUNT] { // don't touch
-        // ¶Ï∏m            // √C¶‚         // ™k¶V∂q       // ∂KπœÆyº–
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // •™§U
-         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // •k§U
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // •k§W
-         0.0f,  0.75f,0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // •™§W
+
+    _points = new GLfloat[HEART_VTX_COUNT * HEART_VTX_ATTR_COUNT] {
+        -0.2f,   0.2f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.5f, 1.0f,
+        0.0f,  -0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.794f, 0.096f,
+        0.2f, 0.2f,   0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.975f, 0.654f,
+       0.4f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.206f, 0.096f,
+       0.0f, -0.3f,   0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.025f, 0.654f,
+        -0.4f, 0.0f,   0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.025f, 0.654f
     };
-    _idx = new GLuint[MISSILE_INDEX_COUNT]{ 0, 1, 2, 2, 4, 0, 2, 3, 4 };
+    _idx = new GLuint[HEART_INDEX_COUNT]{ 0, 1, 5, 1 ,2 ,3, 5, 3, 4 };
 
     setupVertexAttributes();
 }
-CMissile::CMissile(glm::vec3 pos, GLfloat speed) : CMissile() {
-    _pos = pos;
-    _speed = speed;
-}
-CMissile::~CMissile()
+
+CHeart::~CHeart()
 {
     glDeleteBuffers(1, &_vbo);  //•˝ƒ¿©Ò VBO ªP EBO
     glDeleteBuffers(1, &_ebo);
@@ -50,12 +47,7 @@ CMissile::~CMissile()
     if (_idx != NULL) delete[] _idx;
 }
 
-bool CMissile::isOutOfBounds()
-{
-    return (_pos.y > 8.0f) || _pos.y < -8.0f;
-}
-
-void CMissile::setupVertexAttributes()
+void CHeart::setupVertexAttributes()
 {
     // ≥]©w VAO°BVBO ªP EBO
     glGenVertexArrays(1, &_vao);
@@ -67,31 +59,31 @@ void CMissile::setupVertexAttributes()
 
     // ≥]©w VBO
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, MISSILE_VTX_COUNT * MISSILE_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, HEART_VTX_COUNT * HEART_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
 
     // ≥]©w EBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, MISSILE_INDEX_COUNT * sizeof(GLuint), _idx, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, HEART_INDEX_COUNT * sizeof(GLuint), _idx, GL_STATIC_DRAW);
 
     // ¶Ï∏mƒ›©
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, MISSILE_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, HEART_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(0));
     glEnableVertexAttribArray(0);
 
     // √C¶‚ƒ›©
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, MISSILE_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, HEART_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     //™k¶V∂qƒ›©
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, MISSILE_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(6 * sizeof(float)));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, HEART_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
     //∂KπœÆyº–ƒ›©
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, MISSILE_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(9 * sizeof(float)));
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, HEART_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(9 * sizeof(float)));
     glEnableVertexAttribArray(3);
     glBindVertexArray(0); // ∏—∞£πÔ VAO ™∫∏j©w
 }
 
-GLuint CMissile::setShader(const char* vshader, const  char* fshader)
+GLuint CHeart::setShader(const char* vshader, const  char* fshader)
 {
     _shaderProg = createShader(vshader, fshader);
     glUseProgram(_shaderProg);
@@ -100,7 +92,7 @@ GLuint CMissile::setShader(const char* vshader, const  char* fshader)
     return _shaderProg;
 }
 
-void CMissile::setShaderID(GLuint shaderID)
+void CHeart::setShaderID(GLuint shaderID)
 {
     _shaderProg = shaderID;
     glUseProgram(_shaderProg);
@@ -108,53 +100,41 @@ void CMissile::setShaderID(GLuint shaderID)
     glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxTRS));
 }
 
-void CMissile::setColor(glm::vec3 vColor)
+void CHeart::setColor(glm::vec3 vColor)
 {
     _color = vColor;
-    for (int i = 0; i < MISSILE_VTX_COUNT; i++) {
-        _points[i * MISSILE_VTX_ATTR_COUNT + COLOR_OFFSET ]  = _color.x;
-        _points[i * MISSILE_VTX_ATTR_COUNT + COLOR_OFFSET+1] = _color.y;
-        _points[i * MISSILE_VTX_ATTR_COUNT + COLOR_OFFSET+2] = _color.z;
+    for (int i = 0; i < HEART_VTX_COUNT; i++) {
+        _points[i * HEART_VTX_ATTR_COUNT + COLOR_OFFSET ]  = _color.x;
+        _points[i * HEART_VTX_ATTR_COUNT + COLOR_OFFSET+1] = _color.y;
+        _points[i * HEART_VTX_ATTR_COUNT + COLOR_OFFSET+2] = _color.z;
     }
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, MISSILE_VTX_COUNT * MISSILE_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, HEART_VTX_COUNT * HEART_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
 }
 
-void CMissile::draw()
+void CHeart::draw()
 {
     updateMatrix();
     glUseProgram(_shaderProg);
     glBindVertexArray(_vao);
-    glDrawElements(GL_TRIANGLES, MISSILE_INDEX_COUNT, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, HEART_INDEX_COUNT, GL_UNSIGNED_INT, 0);
 }
 
-void CMissile::update(float dt)
-{
-    _pos += glm::vec3(0.0f, _speed * dt, 0.0f); // 假設 speed 是每 frame 的速度
-    setPos(_pos);
-}
-
-void CMissile::updateEnemy(float dt)
-{
-    _pos -= glm::vec3(0.0f, _speed * dt, 0.0f); // 假設 speed 是每 frame 的速度
-    setPos(_pos);
-}
-
-void CMissile::setScale(glm::vec3 vScale)
+void CHeart::setScale(glm::vec3 vScale)
 {
     _scale = vScale;
     _bScale = true;
     _mxScale = glm::scale(glm::mat4(1.0f), _scale);
 }
 
-void CMissile::setPos(glm::vec3 vPt)
+void CHeart::setPos(glm::vec3 vPt)
 {
     _pos = vPt;
     _bPos = true;
     _mxPos = glm::translate(glm::mat4(1.0f), _pos);
 }
 
-void CMissile::setRotX(float angle)
+void CHeart::setRotX(float angle)
 {
     _rotX = glm::radians(angle);
     _rotAxis = _rotAxis | 1;
@@ -163,28 +143,28 @@ void CMissile::setRotX(float angle)
     _bRotation = true;
 }
 
-void CMissile::setRotY(float angle)
+void CHeart::setRotY(float angle)
 {
     _rotY = glm::radians(angle);
     _rotAxis = _rotAxis | 2;
     _mxRotY = glm::rotate(glm::mat4(1.0f), _rotY, glm::vec3(0.0f, 1.0f, 0.0f));
-    if (_rotAxis & 1)_mxRotation = _mxRotY * _mxRotX;
-    else _mxRotation = _mxRotY;
+    if( _rotAxis & 1 )_mxRotation = _mxRotY * _mxRotX;  // ¶≥ X ∂b™∫±€¬‡∂q
+    else _mxRotation = _mxRotY ;
     _bRotation = true;
 }
 
-void CMissile::setRotZ(float angle)
+void CHeart::setRotZ(float angle)
 {
     _rotZ = glm::radians(angle);
     _mxRotZ = glm::rotate(glm::mat4(1.0f), _rotZ, glm::vec3(0.0f, 0.0f, 1.0f));
-    if (_rotAxis == 1) _mxRotation = _mxRotZ * _mxRotX;
-    else if (_rotAxis == 2) _mxRotation = _mxRotZ * _mxRotY;
-    else if (_rotAxis == 3) _mxRotation = _mxRotZ * _mxRotY * _mxRotX;
+    if ( _rotAxis == 1 ) _mxRotation = _mxRotZ * _mxRotX; // •u¶≥ X ∂b™∫±€¬‡∂q
+    else if ( _rotAxis == 2 ) _mxRotation = _mxRotZ * _mxRotY; // •u¶≥ Y ∂b™∫±€¬‡∂q
+    else if ( _rotAxis == 3 ) _mxRotation = _mxRotZ * _mxRotY * _mxRotX; // ¶≥ X°BY ∂b™∫±€¬‡∂q
     else _mxRotation = _mxRotZ;
     _bRotation = true;
 }
 
-void CMissile::updateMatrix()
+void CHeart::updateMatrix()
 {
     if (_bScale || _bPos || _bRotation)
     {
@@ -205,28 +185,23 @@ void CMissile::updateMatrix()
     glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxFinal));
 }
 
-void CMissile::setTransformMatrix(glm::mat4 mxMatrix)
+void CHeart::setTransformMatrix(glm::mat4 mxMatrix)
 {
     _bOnTransform = _bTransform = true;
     _mxTransform = mxMatrix;
 }
-glm::mat4 CMissile::getModelMatrix() { return _mxFinal; }
 
-GLuint CMissile::getShaderProgram() { return _shaderProg; }
+glm::mat4 CHeart::getModelMatrix() { return _mxFinal; }
 
-glm::vec3 CMissile::getPos() const {
-//    std::cout << "missile (" << _pos.x << ',' << _pos.y << ',' << _pos.z << ')' << std::endl;
-    return _pos;
-}
+GLuint CHeart::getShaderProgram() { return _shaderProg; }
 
-void CMissile::reset()
+void CHeart::reset()
 {
     _scale = glm::vec3(1.0f, 1.0f, 1.0f);
     _color = glm::vec3(1.0f, 1.0f, 1.0f);
     _pos = glm::vec3(0.0f, 0.0f, 0.0f);
     _rotX = 0.0f; _rotY = 0.0f; _rotZ = 0.0f;
     _rotAxis = 0;
-    _speed = 0.1f;
     _bRotation = _bScale = _bPos = _bTransform = _bOnTransform = false;
     _mxScale = glm::mat4(1.0f);
     _mxPos = glm::mat4(1.0f);

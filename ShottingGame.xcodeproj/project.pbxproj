@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F50718662DBB6171006946A2 /* CHeart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F50718652DBB6163006946A2 /* CHeart.cpp */; };
 		F560DCFE2DB8C69D007B7340 /* EnemyC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F560DCFD2DB8C69D007B7340 /* EnemyC.cpp */; };
 		F560DD012DB8C6BD007B7340 /* EnemyBoss.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */; };
 		F57B1D102D9FA4C500111703 /* CMissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F57B1D0F2D9FA4C500111703 /* CMissile.cpp */; };
@@ -42,6 +43,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F50718652DBB6163006946A2 /* CHeart.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CHeart.cpp; sourceTree = "<group>"; };
+		F50718672DBB6177006946A2 /* CHeart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHeart.h; sourceTree = "<group>"; };
 		F560DCFD2DB8C69D007B7340 /* EnemyC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyC.cpp; sourceTree = "<group>"; };
 		F560DCFF2DB8C6AC007B7340 /* EnemyC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyC.h; sourceTree = "<group>"; };
 		F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyBoss.cpp; sourceTree = "<group>"; };
@@ -150,6 +153,8 @@
 				F5F30C4A2D93DD45001924C0 /* arcball.h */,
 				F5F30C472D93DD45001924C0 /* CPenta.cpp */,
 				F5F30C4C2D93DD45001924C0 /* CPenta.h */,
+				F50718652DBB6163006946A2 /* CHeart.cpp */,
+				F50718672DBB6177006946A2 /* CHeart.h */,
 				F5B934992D994457001B0215 /* CTrapezid.cpp */,
 				F5B9349B2D99446B001B0215 /* CTrapezid.h */,
 				F5F30C482D93DD45001924C0 /* CQuad.cpp */,
@@ -258,6 +263,7 @@
 				F57B1D132DA392F200111703 /* CPlayer.cpp in Sources */,
 				F5F30C602D93E2CC001924C0 /* GamePlay.cpp in Sources */,
 				F5B9349A2D994457001B0215 /* CTrapezid.cpp in Sources */,
+				F50718662DBB6171006946A2 /* CHeart.cpp in Sources */,
 				F5F30C542D93DD45001924C0 /* CQuad.cpp in Sources */,
 				F5B34ABF2DB61CCB00A47FEE /* EnemyB.cpp in Sources */,
 				F5F30C512D93DD45001924C0 /* wmhandler.cpp in Sources */,

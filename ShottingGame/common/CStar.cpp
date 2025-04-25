@@ -126,8 +126,8 @@ void Star::draw()
 
 void Star::update(float dt){
     _pos.y -= _speed * dt;  // 星星向下移動，模擬星空流動的效果
-    if (_pos.y < -10.0f) {
-        _pos.y = 10.0f;  // 當星星離開螢幕時，重新出現在上方
+    if (_pos.y < -50.0f) {
+        _pos.y = 5.0f;  // 當星星離開螢幕時，重新出現在上方
         _pos.x = rand() % 20 - 10;  // 隨機X位置
     }
     

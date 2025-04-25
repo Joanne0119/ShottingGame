@@ -248,13 +248,13 @@ void CEnemy::update(float dt){
         _pos.y -= _speed * dt;
     } else {
         _pos.x += _dirX * dt;
-        if (_pos.x < -5.0f || _pos.x > 5.0f) {
+        if (_pos.x < -4.0f || _pos.x > 4.0f) {
             _dirX = -_dirX;
         }
     }
     if (_fireCooldown <= 0.0f) {
         shoot();
-        printMissiles();
+//        printMissiles();
     }
 
     setPos(_pos);

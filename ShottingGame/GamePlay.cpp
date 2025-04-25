@@ -6,7 +6,7 @@
 //   ✓   (3%) 能提供連續發射(LINKED LIST，自己撰寫，使用STL 2分)
 //   ✓   (2%)  能產生有速度感的背景物件，或是其他裝飾性的物件
 //   (11%) 敵人部分
-//      (2%)  有至少三種以上不同外形的敵人(不同的顏色)，基本的四方型不算在內
+//   ✓   (2%)  有至少三種以上不同外形的敵人(不同的顏色)，基本的四方型不算在內
 //   ✓   (3%) 以物件導向的多型來控制所有的敵人
 //   ✓   (1%)  敵人可以不斷的產生，而且具有不同的顏色
 //   ✓   (1%)  敵人能隨機朝向玩家發射子彈攻擊
@@ -47,12 +47,14 @@
 #include "common/EnemyB.h"
 #include "common/EnemyC.h"
 #include "common/CEnemy.h"
+#include "common/CHeart.h"
 #include "common/initshader.h"
 #include "common/arcball.h"
 #include "common/wmhandler.h"
 
 #define SCREEN_WIDTH  800
 #define SCREEN_HEIGHT 800
+const int MAX_ENEMIES = 12;
 
 Arcball g_arcball;
 bool g_bRotating = false;
@@ -68,6 +70,7 @@ CTrapezid* g_trap_body = nullptr;
 CQuad* g_quad_shild = nullptr;
 CPlayer* player = nullptr;
 Star* star = nullptr;
+std::vector<CHeart*> hearts;
 std::vector<CEnemy*> enemies;
 
 static float spawnTimer = 0.0f;
@@ -116,6 +119,14 @@ void loadScene(void){
         g_quad_shild[i].setTransformMatrix(translateZ);
     }
     
+    for (int i = 0; i < 5; i++) {
+        CHeart* heart = new CHeart();
+        heart->setShaderID(g_shaderProg); // 如果有 shader
+        heart->setPos(glm::vec3(-3.5f + i * 0.3f, -3.5f, 0.0f)); // 靠左上排列
+        heart->setScale(glm::vec3(0.3f, 0.3f, 1.0f)); // 視情況調整大小
+        hearts.push_back(heart);
+    }
+    
     GLint viewLoc = glGetUniformLocation(g_shaderProg, "mxView");     // 取得 MVP 變數的位置
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(g_viewMx));
 
@@ -132,6 +143,17 @@ void render(void){
     for (int i = 0; i < 12; i++) g_quad_shild[i].draw();
     player->draw();
     for (auto e : enemies) e->draw();
+    
+    int hp = player->getHp();
+    for (int i = 0; i < hearts.size(); i++) {
+        if (i < hp) {
+            hearts[i]->setColor(glm::vec3(1.0f, 0.2f, 0.3f)); // 紅色
+        } else {
+            hearts[i]->setColor(glm::vec3(0.3f, 0.3f, 0.3f)); // 灰色
+        }
+        hearts[i]->draw();
+    }
+
 }
 
 // MARK: - update
@@ -141,6 +163,8 @@ float fireRate = 0.3f; // 每隔 0.3 秒發一發
 void update(float dt)
 {
     if(gameStart){
+        
+        
         for (int i = 0; i < starNumber; i++) star[i].update(dt);
         player->update(dt);
     //    std::cout << player->getPos().x << "\n";
@@ -255,12 +279,17 @@ void releaseAll()
         if (e != nullptr) delete e;
     }
     enemies.clear();
+    
+    for (auto e : hearts) {
+        if (e != nullptr) delete e;
+    }
+    hearts.clear();
 }
 
 
 void spawnEnemy() {
+    if (enemies.size() >= MAX_ENEMIES) return;
     int type = rand() % 3; // 假設三種敵人類型
-//    int type = 0;
 
     CEnemy* newEnemy = nullptr;
     switch (type) {

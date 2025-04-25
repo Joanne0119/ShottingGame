@@ -57,6 +57,7 @@ CPlayer::CPlayer(GLint shaderProg) {
     //action
     _isDead = false;
     _hp = 5;
+    _maxHp = 5;
     _state = PlayerState::Alive;
     _hurtTimer = 0;
     
@@ -101,6 +102,7 @@ CPlayer::CPlayer(GLint shaderProg) {
         fire[i].setPos(_firePos[i]);
         fire[i].setRotZ(_fireRotZ);
     }
+    
 }
 
 CPlayer::~CPlayer()
@@ -128,13 +130,13 @@ void CPlayer::update(float dt){
     
     if (_state == PlayerState::Dead) return;
 
-    if (_state == PlayerState::Hurt1) {
-        _hurtTimer -= dt;
-        if (_hurtTimer <= 0) {
-            _state = PlayerState::Alive;
-        }
-        return; // 爆炸中不更新移動
-    }
+//    if (_state == PlayerState::Hurt1 || _state == PlayerState::Hurt2) {
+//        _hurtTimer -= dt;
+//        if (_hurtTimer <= 0) {
+//            _state = PlayerState::Alive;
+//        }
+//        return; // 爆炸中不更新移動
+//    }
     // 每幀累積向下移動
     _fireScale.y += 0.08f * dt;
     _firePos[0].y -= 0.08f * dt;
@@ -153,10 +155,33 @@ void CPlayer::update(float dt){
 void CPlayer::draw()
 {
     if (_state == PlayerState::Dead) return;
+    
+    for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
+        (*it)->draw();
+    }
 
     if (_state == PlayerState::Hurt1) {
         // 你可以畫個簡單的爆炸或先用不同顏色表示
+        top->draw();
+        body->draw();
+        wings->draw();
+        window->draw();
+        bottom->draw();
+        fire[0].draw();
+        fire[1].draw();
         drawHurt1();
+        return;
+    }
+    else if(_state == PlayerState::Hurt2) {
+        // 你可以畫個簡單的爆炸或先用不同顏色表示
+        top->draw();
+        body->draw();
+        wings->draw();
+        window->draw();
+        bottom->draw();
+        fire[0].draw();
+        fire[1].draw();
+        drawHurt2();
         return;
     }
     else if(_state == PlayerState::Alive){
@@ -168,16 +193,33 @@ void CPlayer::draw()
         bottom->draw();
         fire[0].draw();
         fire[1].draw();
-
-        for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
-            (*it)->draw();
-        }
     }
 }
 
 void CPlayer::drawHurt1()
 {
-    top->draw();
+    glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+    glm::vec3 _bodyRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+    glm::vec3 _wingsRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+    glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+    glm::vec3 _bottomRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
+    glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+    
+    setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+
+}
+
+void CPlayer::drawHurt2()
+{
+    glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+    glm::vec3 _bodyRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+    glm::vec3 _wingsRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+    glm::vec3 _windowRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
+    glm::vec3 _bottomRedColor = glm::vec3(0.75f, 0.25f, 0.25f);
+    glm::vec3 _firRedeColor = glm::vec3(1.0f, 0.25f, 0.0f);
+    
+    setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
+
 }
 
 void CPlayer::shoot() {
@@ -216,11 +258,22 @@ void CPlayer::onHit(int damage){
     if (_hp <= 0) {
         _isDead = true;
         _state = PlayerState::Dead;
+        std::cout << "player is dead" << std::endl;
     }
-    else if(_hp < 5){
+    else if(_hp < 5 && _hp > 2){
         _state = PlayerState::Hurt1;
-        _hurtTimer = 0.8;
+        _hurtTimer = 0.3;
+        std::cout << "player hurt1, hp is " << _hp << std::endl;
     }
+    else {
+        _state = PlayerState::Hurt2;
+        _hurtTimer = 0.3;
+        std::cout << "player hurt2, hp is " << _hp << std::endl;
+    }
+}
+
+int CPlayer::getHp(){
+    return _hp;
 }
 
 void CPlayer::setColor(glm::vec3 vTopColor, glm::vec3 vBodyColor, glm::vec3 vWingsColor, glm::vec3 vWindowColor, glm::vec3 vBottomColor, glm::vec3 vFireColor)
@@ -357,7 +410,7 @@ glm::vec3 CPlayer::getPos() {
 //        return glm::vec3(0.0f);
 //    }
     glm::vec3 newPos = _pos + _bodyPos;
-    std::cout << "player ("<< newPos.x << ',' << newPos.y << ',' << newPos.z << ')' << std::endl;
+//    std::cout << "player ("<< newPos.x << ',' << newPos.y << ',' << newPos.z << ')' << std::endl;
     return newPos;
 }
 
@@ -377,8 +430,8 @@ void CPlayer::setTransformMatrix(glm::mat4 mxMatrix)
     _scale = glm::vec3 (glm::length(glm::vec3(mxMatrix[0][0], mxMatrix[0][1], mxMatrix[0][2])),
                     glm::length(glm::vec3(mxMatrix[1][0], mxMatrix[1][1], mxMatrix[1][2])),
                     glm::length(glm::vec3(mxMatrix[2][0], mxMatrix[2][1], mxMatrix[2][2])));
-    std::cout << "_pos : (" << _pos.x << "," << _pos.y << "," << _pos.z << ") \n";
-    std::cout << "_scale : ("<< _scale.x << "," << _scale.y << "," << _scale.z << ") \n";
+//    std::cout << "_pos : (" << _pos.x << "," << _pos.y << "," << _pos.z << ") \n";
+//    std::cout << "_scale : ("<< _scale.x << "," << _scale.y << "," << _scale.z << ") \n";
 }
 
 void CPlayer::reset()
