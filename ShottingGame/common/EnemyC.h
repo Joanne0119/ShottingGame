@@ -10,5 +10,6 @@ public:
     virtual void drawExplosion() override;
     virtual void reset() override;
     virtual void update(float dt) override;
-    
+    virtual void move(float dt) override;
+    float _angle;
 };

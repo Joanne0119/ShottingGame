@@ -1,10 +1,12 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <cstdlib> 
 
 #include "EnemyC.h"
 
 EnemyC::EnemyC() : CEnemy()
 {
+    _angle = 0.0f;
     _vtxCount = 16;
     _indexCount = 42;
     _vtxAttrCount = 11;
@@ -76,7 +78,17 @@ void EnemyC::update(float dt)
     CEnemy::update(dt);
 }
 
-
+void EnemyC::move(float dt)
+{
+    _angle += 3.0f * dt;  // 每幀旋轉
+    _pos.y -= _speed * dt;
+    _pos.x += cos(_angle) * 0.05f;
+    
+    if (_pos.y < -3.5f) {
+        _pos.y = 3.5f;
+        _pos.x = (rand() % 900 - 450) / 100.0f;  // -4.5 到 4.5 隨機 X
+    }
+}
 
 void EnemyC::reset()
 {

@@ -76,7 +76,10 @@ void EnemyB::update(float dt)
     CEnemy::update(dt);
 }
 
-
+void EnemyB::move(float dt)
+{
+    CEnemy::move(dt);
+}
 
 void EnemyB::reset()
 {

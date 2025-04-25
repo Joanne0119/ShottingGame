@@ -5,6 +5,7 @@
 
 EnemyA::EnemyA() : CEnemy()
 {
+    _angle = 0.0f;
     _vtxCount = 16;
     _indexCount = 42;
     _vtxAttrCount = 11;
@@ -78,6 +79,18 @@ void EnemyA::drawExplosion()
 void EnemyA::update(float dt)
 {
     CEnemy::update(dt);
+}
+
+void EnemyA::move(float dt)
+{
+    _pos.x += _dirX * dt;
+    if (_pos.x < -4.0f || _pos.x > 4.0f) {
+        _dirX = -_dirX;  // 到邊界反向
+    }
+
+    _angle += dt * 5.0f; // 控制 Y 軸波動頻率
+    _pos.y = sin(_angle) * 0.5f + 2.5f; // 在 Y = 2.5 的上下區間波動
+    
 }
 
 void EnemyA::shoot(){

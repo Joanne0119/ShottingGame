@@ -243,15 +243,8 @@ void CEnemy::update(float dt){
         return; // 爆炸中不更新移動
     }
 
-    // Alive 狀態的移動邏輯
-    if (_pos.y > 3.0f) {
-        _pos.y -= _speed * dt;
-    } else {
-        _pos.x += _dirX * dt;
-        if (_pos.x < -4.0f || _pos.x > 4.0f) {
-            _dirX = -_dirX;
-        }
-    }
+    move(dt);
+    
     if (_fireCooldown <= 0.0f) {
         shoot();
 //        printMissiles();
@@ -260,11 +253,22 @@ void CEnemy::update(float dt){
     setPos(_pos);
 }
 
+void CEnemy::move(float dt) {
+    if (_pos.y > 3.0f) {
+        _pos.y -= _speed * dt;
+    } else {
+        _pos.x += _dirX * dt;
+        if (_pos.x < -4.0f || _pos.x > 4.0f) {
+            _dirX = -_dirX;
+        }
+    }
+}
+
 void CEnemy::shoot() {
     if (_fireCooldown <= 0.0f) {
         auto missile = new CMissile(_pos - glm::vec3(0.0f, 0.5f, 0.0f), 5.0f);
         missile->setShaderID(_shaderProg);
-        missile->setColor(glm::vec3(0.5f, 0.3f, 0.3f));
+        missile->setColor(glm::vec3(0.8f, 0.5f, 0.3f));
         missile->setScale(glm::vec3(0.1f,0.1f,0.1f));
         missile->setRotY(180);
         _missiles.push_back(missile);

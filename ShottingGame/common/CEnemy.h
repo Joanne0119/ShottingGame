@@ -17,6 +17,7 @@ public:
     virtual void draw();
     virtual void drawExplosion();
     virtual void update(float dt);
+    virtual void move(float dt); 
     virtual void reset();
     void setColor(glm::vec3 vColor); // 設定模型的顏色
     void setScale(glm::vec3 vScale); // 設定模型的縮放比
