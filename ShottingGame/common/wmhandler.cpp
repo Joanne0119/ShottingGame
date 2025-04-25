@@ -50,6 +50,7 @@ extern GLfloat g_viewScale;
 extern bool g_bRotating;
 extern bool g_bMoving;
 extern bool gameStart;
+extern int styleType;
 #endif
 
 // 滑鼠按鈕按下後 callback function(回呼函式) ---------------
@@ -284,6 +285,24 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 #elif EXAMPLE == 4
 
 #elif EXAMPLE == 5
+                    switch (letter) {
+                        case 's':
+                        case 'S':
+                            styleType = (styleType + 1) % 3;
+                            switch (styleType){
+                                case 0 :
+                                    player->setStyle(PlayerState::Style1);
+                                    break;
+                                case 1 :
+                                    player->setStyle(PlayerState::Style2);
+                                    break;
+                                case 2 :
+                                    player->setStyle(PlayerState::Style3);
+                                    break;
+                                    
+                            }
+                    }
+                
                     
 
 #endif

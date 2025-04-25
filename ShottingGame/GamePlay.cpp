@@ -14,7 +14,7 @@
 //      (2%)  有 BOSS 級的敵人，且至會根據被攻擊的多寡至少三種不同的狀態(外型改變或攻擊方式)可以切換
 //      (4%) (玩家部分)
 //   ✓   (2%)  能判斷玩家是否被打中 並做出合理的反應
-//      (2%)  玩家的船艦至少有三種狀態(外型改變)，且有提供玩家的船艦可改變狀態的機制
+//   ✓   (2%)  玩家的船艦至少有三種狀態(外型改變)，且有提供玩家的船艦可改變狀態的機制
 //      (8%) 其他你覺得可以展示的技術，包含物理或是數學的運算
 //      (2%)提供階層式動態控制，並以時間為基礎進行動態的展示(如: OpenGL_2 的 Example4 ，以自動產生的軌跡去控制相關的物件運動)
 //      (2%)發射導向飛彈攻擊移動的 Boss
@@ -60,7 +60,7 @@ Arcball g_arcball;
 bool g_bRotating = false;
 bool g_bMoving = false;
 bool gameStart = false;
-int styleType;
+int styleType = 0;
 
 GLuint g_shaderProg;
 glm::mat4 g_viewMx = glm::mat4(1.0f);

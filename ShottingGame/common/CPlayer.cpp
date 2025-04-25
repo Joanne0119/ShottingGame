@@ -163,13 +163,28 @@ void CPlayer::draw()
     //MARK: - Style1
     
     if (_style == PlayerState::Style1){
-        top->draw();
-        body->draw();
-        wings->draw();
-        window->draw();
-        bottom->draw();
-        fire[0].draw();
-        fire[1].draw();
+        setPos(
+               glm::vec3(0.0f, -1.3f, 0.0f),
+               glm::vec3(0.0f, -1.8f, 0.0f),
+               glm::vec3(0.0f, -1.8f, 0.0f),
+               glm::vec3(0.0f, -1.8f, 0.0f),
+               glm::vec3(0.0f, -2.4f, 0.0f),
+               glm::vec3(-0.16f, -2.6f, 0.0f),
+               glm::vec3(0.16f, -2.6f, 0.0f));
+        
+        setColor(glm::vec3(0.25f, 0.28f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.25f, 0.28f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 0.25f),
+                 glm::vec3(0.8f, 0.25f, 0.0f));
+        setScale(
+                 glm::vec3(0.5f, 0.5f, 1.0f),
+                 glm::vec3(0.5f, 0.7f, 1.0f),
+                 glm::vec3(1.0f, 0.25f, 1.0f),
+                 glm::vec3(0.15f, 0.175f, 1.0f),
+                 glm::vec3(0.9f, 0.25f, 1.0f),
+                 glm::vec3(0.25f, 0.25f, 1.0f));
         if (_state == PlayerState::Hurt1) {
             glm::vec3 _topRedColor = glm::vec3(0.45f, 0.28f, 1.0f);
             glm::vec3 _bodyRedColor = glm::vec3(0.45f, 0.25f, 0.25f);
@@ -238,6 +253,7 @@ void CPlayer::draw()
             setColor(_topRedColor, _bodyRedColor, _wingsRedColor, _windowRedColor, _bottomRedColor, _firRedeColor);
         }
     }
+    //MARK: - Style3
     else if(_style == PlayerState::Style3){
         setPos(
                glm::vec3(-0.39, -1.35f, 0.0f),
