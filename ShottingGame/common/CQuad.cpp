@@ -24,11 +24,11 @@ CQuad::CQuad()
 	_mxTransform = glm::mat4(1.0f);
 	_mxFinal = glm::mat4(1.0f);
 	_points = new GLfloat[QUAD_VTX_COUNT * QUAD_VTX_ATTR_COUNT] { // don't touch
-		// 位置            // 顏色         // 法向量       // 貼圖座標
-		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // 左下
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // 右下
-		 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 右上
-		-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  // 左上
+		
+		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f
 	};
 	_idx = new GLuint[QUAD_INDEX_COUNT]{ 0, 1, 2, 2, 3, 0 };
 
@@ -37,7 +37,7 @@ CQuad::CQuad()
 
 CQuad::~CQuad()
 {
-	glDeleteBuffers(1, &_vbo);  //先釋放 VBO 與 EBO
+	glDeleteBuffers(1, &_vbo);  
 	glDeleteBuffers(1, &_ebo);
 	glDeleteVertexArrays(1, &_vao); //再釋放 VAO
 	glDeleteProgram(_shaderProg);  //釋放 shader program
@@ -191,6 +191,12 @@ void CQuad::setTransformMatrix(glm::mat4 mxMatrix)
 glm::mat4 CQuad::getModelMatrix() { return _mxFinal; }
 
 GLuint CQuad::getShaderProgram() { return _shaderProg; }
+
+glm::vec3 CQuad::getPos() const {
+    
+    std::cout << "square ("<< _pos.x << ',' << _pos.y << ',' << _pos.z << ')' << std::endl;
+    return _pos;
+}
 
 void CQuad::reset()
 {

@@ -215,6 +215,7 @@ glm::mat4 CMissile::getModelMatrix() { return _mxFinal; }
 GLuint CMissile::getShaderProgram() { return _shaderProg; }
 
 glm::vec3 CMissile::getPos() const {
+    std::cout << "missile (" << _pos.x << ',' << _pos.y << ',' << _pos.z << ')' << std::endl;
     return _pos;
 }
 

@@ -140,14 +140,6 @@ float missileCooldown = 0.0f;
 float fireRate = 0.3f; // 每隔 0.3 秒發一發
 void update(float dt)
 {
-    if(g_bRotating)
-    {
-        g_angle += 180.0f * dt;
-        if (g_angle > 360.0f) g_angle -= 360.0f;
-//        g_tri->setRotZ(g_angle); // 逆時針
-//        g_quad->setRotZ(-g_angle);// 順時針
-        
-    }
     if(gameStart){
         for (int i = 0; i < starNumber; i++) star[i].update(dt);
         player->update(dt);
@@ -159,7 +151,7 @@ void update(float dt)
             enemy->update(dt);  // 👈 更新計時器或狀態
 //            enemy->shoot();
 
-            if (enemy->getState() == Dead) {
+            if (enemy->getState() == EnemyState::Dead) {
                 delete enemy;
                 enemyIt = enemies.erase(enemyIt);
             } else {
@@ -191,7 +183,7 @@ void update(float dt)
 
                     // 如果敵人死了，移除敵人
                     if (enemy->isDead()) {
-                        enemy->setState(Exploding);
+                        enemy->setState(EnemyState::Exploding);
                         ++enemyIt;
                     } else {
                         ++enemyIt;
@@ -210,6 +202,43 @@ void update(float dt)
                 ++missileIt;
             }
         }
+        
+        for (auto& enemy : enemies) {
+            auto& bullets = enemy->getMissiles();
+
+            for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); ) {
+                CMissile* bullet = *bulletIt;
+                bool shouldDelete = false;
+
+                // 1. 先檢查護盾碰撞
+                for (int i = 0; i < 12; i++) {
+                    float distShield = glm::distance(bullet->getPos(), g_quad_shild[i].getPos());
+                    if (distShield < 0.5f) {
+                        shouldDelete = true;
+                        break;
+                    }
+                }
+
+                // 2. 如果沒有撞護盾，再檢查玩家碰撞
+                if (!shouldDelete) {
+                    float dist = glm::distance(bullet->getPos(), player->getPos());
+                    if (dist < 0.5f) {
+                        player->onHit(1);
+                        shouldDelete = true;
+                    }
+                }
+
+                // 3. 根據結果處理子彈
+                if (shouldDelete) {
+                    delete bullet;
+                    bulletIt = bullets.erase(bulletIt);
+                } else {
+                    ++bulletIt;
+                }
+            }
+        }
+
+
     }
 
 }
@@ -241,7 +270,7 @@ void spawnEnemy() {
                 newEnemy->setShaderID(g_shaderProg);
                 newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
                 newEnemy->setColor(glm::vec3(0.8f, 0.8f, 0.1f));
-                newEnemy->setScale(glm::vec3(0.4f));
+                newEnemy->setScale(glm::vec3(0.6f));
                 enemies.push_back(newEnemy);
             }
             
@@ -252,7 +281,7 @@ void spawnEnemy() {
                 newEnemy->setShaderID(g_shaderProg);
                 newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
                 newEnemy->setColor(glm::vec3(0.0f, 0.6f, 0.2f));
-                newEnemy->setScale(glm::vec3(0.6f));
+                newEnemy->setScale(glm::vec3(0.9f));
                 enemies.push_back(newEnemy);
             }
             break;
@@ -263,7 +292,7 @@ void spawnEnemy() {
                 newEnemy->setShaderID(g_shaderProg);
                 newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
                 newEnemy->setColor(glm::vec3(0.8f, 0.3f, 0.2f));
-                newEnemy->setScale(glm::vec3(0.7f));
+                newEnemy->setScale(glm::vec3(0.9f));
                 enemies.push_back(newEnemy);
             }
             break;

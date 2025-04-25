@@ -54,6 +54,12 @@ CPlayer::CPlayer(GLint shaderProg) {
     _mxTransform = glm::mat4(1.0f);
     _mxFinal = glm::mat4(1.0f);
     
+    //action
+    _isDead = false;
+    _hp = 5;
+    _state = PlayerState::Alive;
+    _hurtTimer = 0;
+    
     top = new CTriangle;
     body = new CTrapezid;
     wings = new CTrapezid;
@@ -119,6 +125,16 @@ void CPlayer::update(float dt){
             ++it;
         }
     }
+    
+    if (_state == PlayerState::Dead) return;
+
+    if (_state == PlayerState::Hurt1) {
+        _hurtTimer -= dt;
+        if (_hurtTimer <= 0) {
+            _state = PlayerState::Alive;
+        }
+        return; // 爆炸中不更新移動
+    }
     // 每幀累積向下移動
     _fireScale.y += 0.08f * dt;
     _firePos[0].y -= 0.08f * dt;
@@ -136,17 +152,32 @@ void CPlayer::update(float dt){
 
 void CPlayer::draw()
 {
-    top->draw();
-    body->draw();
-    wings->draw();
-    window->draw();
-    bottom->draw();
-    fire[0].draw();
-    fire[1].draw();
-    
-    for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
-        (*it)->draw();
+    if (_state == PlayerState::Dead) return;
+
+    if (_state == PlayerState::Hurt1) {
+        // 你可以畫個簡單的爆炸或先用不同顏色表示
+        drawHurt1();
+        return;
     }
+    else if(_state == PlayerState::Alive){
+        // Alive 狀態畫正常模型
+        top->draw();
+        body->draw();
+        wings->draw();
+        window->draw();
+        bottom->draw();
+        fire[0].draw();
+        fire[1].draw();
+
+        for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
+            (*it)->draw();
+        }
+    }
+}
+
+void CPlayer::drawHurt1()
+{
+    top->draw();
 }
 
 void CPlayer::shoot() {
@@ -172,6 +203,25 @@ void CPlayer::printMissiles() {
     }
 }
 
+void CPlayer::setState(PlayerState::State state) { _state = state; }
+PlayerState::State CPlayer::getState() const { return _state; }
+
+bool CPlayer::isDead() const{
+    return _isDead;
+}
+
+void CPlayer::onHit(int damage){
+    if (_isDead) return;
+    _hp -= damage;
+    if (_hp <= 0) {
+        _isDead = true;
+        _state = PlayerState::Dead;
+    }
+    else if(_hp < 5){
+        _state = PlayerState::Hurt1;
+        _hurtTimer = 0.8;
+    }
+}
 
 void CPlayer::setColor(glm::vec3 vTopColor, glm::vec3 vBodyColor, glm::vec3 vWingsColor, glm::vec3 vWindowColor, glm::vec3 vBottomColor, glm::vec3 vFireColor)
 {
@@ -306,7 +356,9 @@ glm::vec3 CPlayer::getPos() {
 //        std::cerr << "Invalid position name: " << name << std::endl;
 //        return glm::vec3(0.0f);
 //    }
-    return _pos + _bodyPos;
+    glm::vec3 newPos = _pos + _bodyPos;
+    std::cout << "player ("<< newPos.x << ',' << newPos.y << ',' << newPos.z << ')' << std::endl;
+    return newPos;
 }
 
 void CPlayer::setTransformMatrix(glm::mat4 mxMatrix)

@@ -3,7 +3,9 @@
 #include <list>
 #include "CMissile.h"
 
-enum State { Alive, Hurt1, Hurt2, Hurt3, Exploding, Dead };
+namespace EnemyState {
+    enum State { Alive, Hurt1, Hurt2, Hurt3, Exploding, Dead };
+}
 
 class CEnemy {
 public:
@@ -31,8 +33,8 @@ public:
     //Enemy Action
     void onHit(int damage);
     bool isDead() const;
-    void setState(State state);
-    State getState() const;
+    void setState(EnemyState::State state);
+    EnemyState::State getState() const;
     //shoot
     virtual void shoot();
     std::list<CMissile*>& getMissiles(); // 回傳子彈清單
@@ -64,7 +66,7 @@ protected:
     int _hp;
     float _dirX;
     float _explosionTimer;
-    State _state;
+    EnemyState::State _state;
     //shoot
     std::list<CMissile*> _missiles;
     GLfloat _fireRate;

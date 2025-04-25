@@ -6,6 +6,11 @@
 #include "CPenta.h"
 #include "CMissile.h"
 
+namespace PlayerState {
+    enum State { Alive, Hurt1, Hurt2, Dead };
+    enum Style { Style1, Style2, Style3 };
+}
+
 
 class CPlayer
 {
@@ -13,6 +18,7 @@ public:
     CPlayer(GLint shaderProg);
     ~CPlayer();
     void draw();
+    void drawHurt1();
     void reset();
     void setColor(glm::vec3 vTopColor, glm::vec3 vBodyColor, glm::vec3 vWingsColor , glm::vec3 vWindowColor ,glm::vec3 vBottomColor, glm::vec3 vFireColor); // 設定模型的顏色
     void setScale(glm::vec3 vTopScale, glm::vec3 vBodyScale, glm::vec3 vWingsScale, glm::vec3 vWindowScale, glm::vec3 vBottomScale, glm::vec3 vFireScale); // 設定模型的縮放比
@@ -31,8 +37,19 @@ public:
     void move();
     std::list<CMissile*>& getMissiles(); // 回傳子彈清單
     void printMissiles();
+    
+    void onHit(int damage);
+    bool isDead() const;
+    void setState(PlayerState::State state);
+    PlayerState::State getState() const;
 
 private:
+    //action
+    bool _isDead;
+    int _hp;
+    PlayerState::State _state;
+    float _hurtTimer;
+    
     CTriangle* top;
     CTrapezid* body;
     CTrapezid* wings;

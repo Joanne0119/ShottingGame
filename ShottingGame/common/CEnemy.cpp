@@ -30,7 +30,7 @@ CEnemy::CEnemy()
     _isDead = false;
     _speed = 1.5f;
     _hp = 1;
-    _state = Alive;
+    _state = EnemyState::Alive;
     _explosionTimer = 0;
     _dirX = (rand() % 2 == 0 ? 1.0f : -1.0f) * (0.5f + rand() % 100 / 100.0f);
     _points = nullptr;
@@ -174,14 +174,14 @@ void CEnemy::setColor(glm::vec3 vColor)
 
 void CEnemy::draw()
 {
-    if (_state == Dead) return;
+    if (_state == EnemyState::Dead) return;
 
-    if (_state == Exploding) {
+    if (_state == EnemyState::Exploding) {
         // 你可以畫個簡單的爆炸或先用不同顏色表示
         drawExplosion();
         return;
     }
-    else if(_state == Alive){
+    else if(_state == EnemyState::Alive){
         // Alive 狀態畫正常模型
         updateMatrix();
         glUseProgram(_shaderProg);
@@ -233,12 +233,12 @@ void CEnemy::update(float dt){
         }
     }
 
-    if (_state == Dead) return;
+    if (_state == EnemyState::Dead) return;
 
-    if (_state == Exploding) {
+    if (_state == EnemyState::Exploding) {
         _explosionTimer -= dt;
         if (_explosionTimer <= 0) {
-            _state = Dead;
+            _state = EnemyState::Dead;
         }
         return; // 爆炸中不更新移動
     }
@@ -285,8 +285,8 @@ void CEnemy::printMissiles() {
 }
 
 
-void CEnemy::setState(State state) { _state = state; }
-State CEnemy::getState() const { return _state; }
+void CEnemy::setState(EnemyState::State state) { _state = state; }
+EnemyState::State CEnemy::getState() const { return _state; }
 
 bool CEnemy::isDead() const{
     return _isDead;
@@ -297,7 +297,7 @@ void CEnemy::onHit(int damage){
     _hp -= damage;
     if (_hp <= 0) {
         _isDead = true;  
-        _state = Exploding;
+        _state = EnemyState::Exploding;
         _explosionTimer = 1.0;
     }
 }

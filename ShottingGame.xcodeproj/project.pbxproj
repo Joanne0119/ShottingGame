@@ -46,6 +46,7 @@
 		F560DCFF2DB8C6AC007B7340 /* EnemyC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyC.h; sourceTree = "<group>"; };
 		F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyBoss.cpp; sourceTree = "<group>"; };
 		F560DD022DB8C6D0007B7340 /* EnemyBoss.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyBoss.h; sourceTree = "<group>"; };
+		F560DD032DB8D2F9007B7340 /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		F57B1D0F2D9FA4C500111703 /* CMissile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CMissile.cpp; sourceTree = "<group>"; };
 		F57B1D112D9FA4DA00111703 /* CMissile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CMissile.h; sourceTree = "<group>"; };
 		F57B1D122DA392F200111703 /* CPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayer.cpp; sourceTree = "<group>"; };
@@ -174,6 +175,7 @@
 				F5F30C432D93DD45001924C0 /* initShader.cpp */,
 				F5F30C4D2D93DD45001924C0 /* initshader.h */,
 				F5F30C452D93DD45001924C0 /* typedefs.h */,
+				F560DD032DB8D2F9007B7340 /* State.h */,
 				F5F30C442D93DD45001924C0 /* wmhandler.cpp */,
 				F5F30C4F2D93DD45001924C0 /* wmhandler.h */,
 			);

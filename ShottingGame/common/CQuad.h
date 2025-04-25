@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <glm/glm.hpp>
 
 #define QUAD_VTX_COUNT  4
@@ -24,6 +24,7 @@ public:
 	void setTransformMatrix(glm::mat4 mxMatrix);
 	glm::mat4 getModelMatrix();
 	GLuint getShaderProgram();
+    glm::vec3 getPos() const;
 
 private:
 	GLfloat* _points;
