@@ -270,7 +270,7 @@ void CEnemy::shoot() {
         missile->setShaderID(_shaderProg);
         missile->setColor(glm::vec3(0.8f, 0.5f, 0.3f));
         missile->setScale(glm::vec3(0.1f,0.1f,0.1f));
-        missile->setRotY(180);
+        missile->setRotX(180);
         _missiles.push_back(missile);
         _fireCooldown = _fireRate;
     }

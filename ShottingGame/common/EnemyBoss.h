@@ -16,6 +16,7 @@ public:
     EnemyBoss();
     EnemyBoss(glm::vec3 playerPos);
     virtual ~EnemyBoss();
+    virtual void init();
     virtual void draw() override;
     virtual void drawExplosion() override;
     virtual void reset() override;
@@ -26,9 +27,10 @@ public:
     virtual void updatePhase();
     virtual float getCooldownByPhase();
     BossPhase::Phase _phase;
-    int _maxHp;
+    int getMaxHp();
 protected:
     void shootSpread();
     void shootHoming(glm::vec3 playerPos);
     glm::vec3 _playerPos;
+    int _maxHp;
 };

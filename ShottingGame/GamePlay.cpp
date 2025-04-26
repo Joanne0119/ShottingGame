@@ -16,7 +16,7 @@
 //   ✓   (2%)  能判斷玩家是否被打中 並做出合理的反應
 //   ✓   (2%)  玩家的船艦至少有三種狀態(外型改變)，且有提供玩家的船艦可改變狀態的機制
 //      (8%) 其他你覺得可以展示的技術，包含物理或是數學的運算
-//      (2%)提供階層式動態控制，並以時間為基礎進行動態的展示(如: OpenGL_2 的 Example4 ，以自動產生的軌跡去控制相關的物件運動)
+//   ✓   (2%)提供階層式動態控制，並以時間為基礎進行動態的展示(如: OpenGL_2 的 Example4 ，以自動產生的軌跡去控制相關的物件運動)
 //      (2%)發射導向飛彈攻擊移動的 Boss
 //   ✓       敵人被打到有其他的效果
 //   ✓       戰鬥機被打到時有其他的效果
@@ -99,8 +99,6 @@ void initCirclePoints() {
     }
 }
 
-void spawnEnemy();
-
 void loadScene(void){
     g_shaderProg = createShader("vshader21.glsl","fshader21.glsl");
     
@@ -164,6 +162,7 @@ void render(void){
 
 }
 
+void spawnEnemy();
 // MARK: - update
 float g_angle = 0.0f;
 float missileCooldown = 0.0f;
@@ -217,6 +216,12 @@ void update(float dt)
                     if (enemy->isDead()) {
                         enemy->setState(EnemyState::Exploding);
                         defeatedCount++;
+                        if (dynamic_cast<EnemyBoss*>(enemy)) {
+                            std::cout << "Boss has been defeated!" << std::endl;
+                            defeatedCount = 0;
+                            bossSpawned = !bossSpawned;
+                            bossIntroTimer = !bossIntroTimer;
+                        }
                         ++enemyIt;
                     } else {
                         ++enemyIt;
@@ -293,10 +298,12 @@ void releaseAll()
         if (e != nullptr) delete e;
     }
     hearts.clear();
+    
 }
 
 void spawnBoss() {
     CEnemy* boss = new EnemyBoss(player->getPos());
+    
     if (boss) {
         boss->setShaderID(g_shaderProg);
         boss->setPos(glm::vec3(0.0f, 5.5f, 0.0f)); // 從螢幕頂端飄入

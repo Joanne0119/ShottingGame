@@ -1,66 +1,45 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <cstdlib>
+#include <iostream>
 
 #include "EnemyBoss.h"
 
 EnemyBoss::EnemyBoss() : CEnemy()
 {
-    _angle = 0.0f;
-    _vtxCount = 16;
-    _indexCount = 42;
-    _vtxAttrCount = 11;
-    _phase = BossPhase::Entry;
-    _maxHp = 15;
-    _hp = 15;
-
-    _points = new GLfloat[_vtxCount * _vtxAttrCount]{
-        -0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.3f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.3f, 0.2f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-         0.5f, 0.4f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-         0.35f,  0.18f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.6f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.4f,  -0.1f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        0.5f,  -0.3f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        0.1f,  -0.3f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f,  -0.35f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.1f,  -0.3f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.5f,  -0.3f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.4f,  -0.1f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.6f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.35f,  0.18f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f  
-    };
-    _idx = new GLuint[_indexCount]{
-        0, 1, 14,
-        1, 14, 15,
-        1, 15, 2,
-        2, 15, 4,
-        2, 3, 4,
-        4, 5, 6,
-        4, 6, 8,
-        6, 8, 7,
-        8, 10, 15,
-        8, 9, 10,
-        10, 11, 12,
-        10, 12, 14,
-        12, 13, 14,
-        12, 13, 14};
-    setupVertexAttributes();
+    init();
 };
 
 EnemyBoss::EnemyBoss(glm::vec3 playerPos) : CEnemy()
 {
+    init();
+    _playerPos = playerPos;
+};
+
+EnemyBoss::~EnemyBoss()
+{
+    glDeleteBuffers(1, &_vbo);
+    glDeleteBuffers(1, &_ebo);
+    glDeleteVertexArrays(1, &_vao); 
+    if (_points != NULL) {
+        delete[] _points;
+        _points = nullptr;
+    }
+    if (_idx != NULL){
+        delete[] _idx;
+        _idx = nullptr;
+    }
+}
+
+void EnemyBoss::init(){
     _angle = 0.0f;
     _vtxCount = 16;
     _indexCount = 42;
     _vtxAttrCount = 11;
     _phase = BossPhase::Entry;
-    _maxHp = 15;
-    _hp = 15;
-    _playerPos = playerPos;
-
+    _maxHp = 30;
+    _hp = 30;
+    
     _points = new GLfloat[_vtxCount * _vtxAttrCount]{
         -0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         -0.3f, 0.2f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
@@ -95,26 +74,31 @@ EnemyBoss::EnemyBoss(glm::vec3 playerPos) : CEnemy()
         12, 13, 14,
         12, 13, 14};
     setupVertexAttributes();
-};
-
-EnemyBoss::~EnemyBoss()
-{
-    glDeleteBuffers(1, &_vbo);  //•˝ƒ¿©Ò VBO ªP EBO
-    glDeleteBuffers(1, &_ebo);
-    glDeleteVertexArrays(1, &_vao); //¶Aƒ¿©Ò VAO
-    if (_points != NULL) {
-        delete[] _points;
-        _points = nullptr;
-    }
-    if (_idx != NULL){
-        delete[] _idx;
-        _idx = nullptr;
-    }
 }
 
 void EnemyBoss::draw()
 {
-    CEnemy::draw();
+    if (_state == EnemyState::Dead) return;
+
+    if (_state == EnemyState::Exploding) {
+        // 你可以畫個簡單的爆炸或先用不同顏色表示
+        drawExplosion();
+        return;
+    }
+    else if(_state == EnemyState::Alive){
+        // Alive 狀態畫正常模型
+        updateMatrix();
+        glUseProgram(_shaderProg);
+        glBindVertexArray(_vao);
+        glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+        
+        for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
+            (*it)->draw();
+        }
+//        _hpBarBG->draw();
+//        _hpBarFG->draw();
+        glUseProgram(_shaderProg);
+    }
 }
 
 void EnemyBoss::drawExplosion()
@@ -126,6 +110,7 @@ void EnemyBoss::drawExplosion()
 void EnemyBoss::update(float dt)
 {
     _fireCooldown -= dt;
+//    std::cout << "boss pos: (" << _pos.x << ',' << _pos.y << ')' << std::endl;
     
     for (auto it = _missiles.begin(); it != _missiles.end(); ) {
         (*it)->updateEnemy(dt);
@@ -191,16 +176,19 @@ void EnemyBoss::move(float dt)
 void EnemyBoss::updatePhase() {
     if (_hp <= 0.0f) {
         _state = EnemyState::Exploding;
+        _phase = BossPhase::Dying;
         _explosionTimer = 1.5f;
         return;
     }
 
-    if (_hp < _maxHp * 0.3f && _phase != BossPhase::Phase2) {
-        _phase = BossPhase::Phase2;
-    } else if (_hp < _maxHp * 0.6f && _phase != BossPhase::Phase3) {
+    if (_hp < _maxHp * 0.5f && _phase != BossPhase::Phase3) {
         _phase = BossPhase::Phase3;
+    } else if (_hp < _maxHp * 0.7f && _phase != BossPhase::Phase2) {
+        _phase = BossPhase::Phase2;
     }
 }
+
+int EnemyBoss::getMaxHp() { return _maxHp;}
 
 void EnemyBoss::shoot()
 {
@@ -227,8 +215,7 @@ void EnemyBoss::shootSpread() {
     for (int i = 0; i < bulletCount; ++i) {
         float angle = startAngle + i * (spreadAngle / (bulletCount - 1)); // 每顆子彈的角度
         glm::vec3 dir = glm::vec3(sin(angle), -cos(angle), 0.0f); // 向下並帶角度
-
-        auto missile = new CMissile(_pos, 5.0f, dir);  // 你要讓 CMissile 支援方向參數
+        auto missile = new CMissile(_pos, 5.0f, dir);
         missile->setShaderID(_shaderProg);
         missile->setColor(glm::vec3(1.0f, 0.3f, 0.2f));
         missile->setScale(glm::vec3(0.12f));
@@ -239,9 +226,9 @@ void EnemyBoss::shootSpread() {
 void EnemyBoss::shootHoming(glm::vec3 playerPos) {
     auto missile = new CMissile(_pos - glm::vec3(0, 0.5f, 0), 3.5f);
     missile->setShaderID(_shaderProg);
-    missile->setColor(glm::vec3(0.2f, 0.9f, 1.0f));
-    missile->setScale(glm::vec3(0.12f));
-    missile->setRotY(180);
+    missile->setColor(glm::vec3(0.3f, 0.9f, 1.0f));
+    missile->setScale(glm::vec3(0.14f));
+    missile->setRotX(180);
     missile->setTarget(playerPos); // 啟用追蹤
     _missiles.push_back(missile);
     _fireCooldown = _fireRate;
@@ -250,8 +237,8 @@ void EnemyBoss::shootHoming(glm::vec3 playerPos) {
 float EnemyBoss::getCooldownByPhase() {
     switch (_phase) {
         case BossPhase::Phase1: return 2.0f;
-        case BossPhase::Phase2: return 1.0f;
-        case BossPhase::Phase3: return 0.6f;
+        case BossPhase::Phase2: return 2.0f;
+        case BossPhase::Phase3: return 1.0f;
         default: return 1.5f;
     }
 }

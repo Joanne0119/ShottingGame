@@ -145,7 +145,8 @@ void CMissile::update(float dt)
 void CMissile::updateEnemy(float dt)
 {
     if (_isHoming) {
-        glm::vec3 toTarget = glm::normalize(_targetPos - _pos);
+        glm::vec3 adjustedTarget = _targetPos + glm::vec3(0.0f, 0.8f, 0.0f);
+        glm::vec3 toTarget = glm::normalize(adjustedTarget - _pos);
         // 緩慢轉向：線性插值或 slerp
         _dir = glm::normalize(glm::mix(_dir, toTarget, 0.05f)); // 0.05f 是轉向速度
     }
