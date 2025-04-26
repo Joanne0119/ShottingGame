@@ -14,6 +14,8 @@ CMissile::CMissile()
     _rotX = 0.0f; _rotY = 0.0f; _rotZ = 0.0f;
     _rotAxis = 0;
     _speed = 0.1f;
+    _dir = glm::vec3(0.0f,-1.0f,0.0f);
+    _isHoming = false;
     _bRotation = _bScale = _bPos = _bTransform = _bOnTransform = false;
     _mxScale = glm::mat4(1.0f);
     _mxPos = glm::mat4(1.0f);
@@ -40,6 +42,12 @@ CMissile::CMissile(glm::vec3 pos, GLfloat speed) : CMissile() {
     _pos = pos;
     _speed = speed;
 }
+CMissile::CMissile(glm::vec3 pos, GLfloat speed, glm::vec3 dir) : CMissile() {
+    _pos = pos;
+    _speed = speed;
+    _dir = glm::normalize(dir);
+}
+
 CMissile::~CMissile()
 {
     glDeleteBuffers(1, &_vbo);  //•˝ƒ¿©Ò VBO ªP EBO
@@ -52,7 +60,7 @@ CMissile::~CMissile()
 
 bool CMissile::isOutOfBounds()
 {
-    return (_pos.y > 8.0f) || _pos.y < -8.0f;
+    return (_pos.y > 3.5f) || _pos.y < -3.5f;
 }
 
 void CMissile::setupVertexAttributes()
@@ -136,8 +144,18 @@ void CMissile::update(float dt)
 
 void CMissile::updateEnemy(float dt)
 {
-    _pos -= glm::vec3(0.0f, _speed * dt, 0.0f); // 假設 speed 是每 frame 的速度
+    if (_isHoming) {
+        glm::vec3 toTarget = glm::normalize(_targetPos - _pos);
+        // 緩慢轉向：線性插值或 slerp
+        _dir = glm::normalize(glm::mix(_dir, toTarget, 0.05f)); // 0.05f 是轉向速度
+    }
+    _pos += _dir * _speed * dt;
     setPos(_pos);
+}
+
+void CMissile::setTarget(glm::vec3 target) {
+    _targetPos = target;
+    _isHoming = true;
 }
 
 void CMissile::setScale(glm::vec3 vScale)

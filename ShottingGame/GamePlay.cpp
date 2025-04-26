@@ -11,7 +11,7 @@
 //   ✓   (1%)  敵人可以不斷的產生，而且具有不同的顏色
 //   ✓   (1%)  敵人能隨機朝向玩家發射子彈攻擊
 //   ✓   (2%)  戰鬥機發射的子彈可以打到敵人，而且敵人會消失
-//      (2%)  有 BOSS 級的敵人，且至會根據被攻擊的多寡至少三種不同的狀態(外型改變或攻擊方式)可以切換
+//   ✓   (2%)  有 BOSS 級的敵人，且至會根據被攻擊的多寡至少三種不同的狀態(外型改變或攻擊方式)可以切換
 //      (4%) (玩家部分)
 //   ✓   (2%)  能判斷玩家是否被打中 並做出合理的反應
 //   ✓   (2%)  玩家的船艦至少有三種狀態(外型改變)，且有提供玩家的船艦可改變狀態的機制
@@ -46,6 +46,7 @@
 #include "common/EnemyA.h"
 #include "common/EnemyB.h"
 #include "common/EnemyC.h"
+#include "common/EnemyBoss.h"
 #include "common/CEnemy.h"
 #include "common/CHeart.h"
 #include "common/initshader.h"
@@ -61,6 +62,12 @@ bool g_bRotating = false;
 bool g_bMoving = false;
 bool gameStart = false;
 int styleType = 0;
+
+int defeatedCount = 0;
+int bossSpawnThreshold = 10;
+bool bossSpawned = false;
+bool isBossIncoming = false;
+float bossIntroTimer = 0.0f;
 
 GLuint g_shaderProg;
 glm::mat4 g_viewMx = glm::mat4(1.0f);
@@ -134,7 +141,7 @@ void loadScene(void){
     g_projMx = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, -2.0f, 2.0f);
     GLint projLoc = glGetUniformLocation(g_shaderProg, "mxProj");     // 取得 MVP 變數的位置
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(g_projMx));
-    glClearColor(0.08f, 0.08f, 0.18f, 1.0f); // 設定清除 back buffer 背景的顏色
+    glClearColor(0.08f, 0.08f, 0.2f, 1.0f); // 設定清除 back buffer 背景的顏色
 }
 // MARK: -render
 
@@ -186,7 +193,7 @@ void update(float dt)
     
     
         spawnTimer += dt;
-        if (spawnTimer > 1.8f) { // 每 1.5 秒產生一個
+        if (spawnTimer > 1.8f && !isBossIncoming && !bossSpawned) { // 每 1.5 秒產生一個
             spawnEnemy();
             spawnTimer = 0.0f;
         }
@@ -209,6 +216,7 @@ void update(float dt)
                     // 如果敵人死了，移除敵人
                     if (enemy->isDead()) {
                         enemy->setState(EnemyState::Exploding);
+                        defeatedCount++;
                         ++enemyIt;
                     } else {
                         ++enemyIt;
@@ -287,49 +295,61 @@ void releaseAll()
     hearts.clear();
 }
 
+void spawnBoss() {
+    CEnemy* boss = new EnemyBoss(player->getPos());
+    if (boss) {
+        boss->setShaderID(g_shaderProg);
+        boss->setPos(glm::vec3(0.0f, 5.5f, 0.0f)); // 從螢幕頂端飄入
+        boss->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+        boss->setScale(glm::vec3(2.0f));
+        enemies.push_back(boss);
+    }
+}
+
 
 void spawnEnemy() {
+    if (bossSpawned) return;  // Boss 出現後就不再生成敵人
+
+    if (defeatedCount >= bossSpawnThreshold && !bossSpawned) {
+        spawnBoss();          // 生成 boss
+        bossSpawned = true;
+        return;
+    }
+
+    if (isBossIncoming) return;
+    
     if (enemies.size() >= MAX_ENEMIES) return;
-    int type = rand() % 3; // 假設三種敵人類型
+    
+    int type = rand() % 3;
+
 
     CEnemy* newEnemy = nullptr;
     switch (type) {
-        case 0:
-            newEnemy = new EnemyA();
-            if (newEnemy) {
-                newEnemy->setShaderID(g_shaderProg);
-                newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
-                newEnemy->setColor(glm::vec3(0.8f, 0.8f, 0.1f));
-                newEnemy->setScale(glm::vec3(0.6f));
-                enemies.push_back(newEnemy);
-            }
-            
-            break;
-        case 1:
-            newEnemy = new EnemyB();  //你需要先定義 EnemyB 類別
-            if (newEnemy) {
-                newEnemy->setShaderID(g_shaderProg);
-                newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
-                newEnemy->setColor(glm::vec3(0.0f, 0.6f, 0.2f));
-                newEnemy->setScale(glm::vec3(0.9f));
-                enemies.push_back(newEnemy);
-            }
-            break;
-        case 2:
-//            newEnemy = new BossEnemy(); // 同理定義 BossEnemy
-            newEnemy = new EnemyC();  //你需要先定義 EnemyB 類別
-            if (newEnemy) {
-                newEnemy->setShaderID(g_shaderProg);
-                newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); // 頂端隨機生成
-                newEnemy->setColor(glm::vec3(0.8f, 0.3f, 0.2f));
-                newEnemy->setScale(glm::vec3(0.9f));
-                enemies.push_back(newEnemy);
-            }
-            break;
-    }
+        case 0: // EnemyA
+           newEnemy = new EnemyA();
+           newEnemy->setColor(glm::vec3(0.8f, 0.8f, 0.1f));
+           newEnemy->setScale(glm::vec3(0.6f));
+           break;
+       case 1: // EnemyB
+           newEnemy = new EnemyB();
+           newEnemy->setColor(glm::vec3(0.0f, 0.6f, 0.2f));
+           newEnemy->setScale(glm::vec3(0.9f));
+           break;
+       case 2: // EnemyC
+           newEnemy = new EnemyC();
+           newEnemy->setColor(glm::vec3(0.8f, 0.3f, 0.8f));
+           newEnemy->setScale(glm::vec3(0.9f));
+           break;
+   }
 
+   if (newEnemy) {
+       newEnemy->setShaderID(g_shaderProg);
+       newEnemy->setPos(glm::vec3(rand() % 8 - 4, 4.0f, 0.0f)); 
+       enemies.push_back(newEnemy);
+   }
     
 }
+
 
 int main()
 {

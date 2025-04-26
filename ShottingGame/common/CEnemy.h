@@ -40,6 +40,9 @@ public:
     virtual void shoot();
     std::list<CMissile*>& getMissiles(); // 回傳子彈清單
     void printMissiles();
+    //hp
+    int getHp();
+    void setHp(int hp);
     
 
 protected:

@@ -35,7 +35,7 @@ CEnemy::CEnemy()
     _dirX = (rand() % 2 == 0 ? 1.0f : -1.0f) * (0.5f + rand() % 100 / 100.0f);
     _points = nullptr;
     _idx = nullptr;
-    _fireRate = 0.8f;
+    _fireRate = 1.5f;
     _fireCooldown = 0.0f;
     
 
@@ -304,6 +304,14 @@ void CEnemy::onHit(int damage){
         _state = EnemyState::Exploding;
         _explosionTimer = 1.0;
     }
+}
+
+int CEnemy::getHp(){
+    return _hp;
+}
+
+void CEnemy::setHp(int hp){
+    _hp = hp;
 }
 
 void CEnemy::setScale(glm::vec3 vScale)

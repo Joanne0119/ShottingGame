@@ -10,6 +10,7 @@ class CMissile
 public:
     CMissile();
     CMissile(glm::vec3 pos, GLfloat speed);
+    CMissile(glm::vec3 pos, GLfloat speed, glm::vec3 dir);
     ~CMissile();
     void setupVertexAttributes();
     GLuint setShader(const char* vshader, const char* fshader);
@@ -28,7 +29,8 @@ public:
     glm::mat4 getModelMatrix();
     GLuint getShaderProgram();
     glm::vec3 getPos() const;
-    bool isOutOfBounds(); 
+    bool isOutOfBounds();
+    void setTarget(glm::vec3 target);
 
 private:
     GLfloat* _points;
@@ -46,6 +48,9 @@ private:
     glm::vec3 _pos;        // 模型的位置
     GLfloat _rotX, _rotY, _rotZ; // 模型的旋轉角度
     GLfloat _speed;
+    glm::vec3 _dir;
+    glm::vec3 _targetPos;
+    bool _isHoming;
     glm::mat4 _mxRotX, _mxRotY, _mxRotZ, _mxRotation, _mxScale, _mxPos, _mxTRS;
     glm::mat4 _mxTransform, _mxFinal;
     void updateMatrix();
