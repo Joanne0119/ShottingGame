@@ -31,8 +31,8 @@ extern bool g_bRotating;
 extern bool g_bMoving;
 #elif EXAMPLE == 4
 #define QUAD_NUM 4
-extern CQuad* g_RQuad;	// 紅色方塊再正中間
-extern CQuad* g_GQuad;	// 綠色方塊為紅色方塊的 child
+extern CQuad* g_RQuad;
+extern CQuad* g_GQuad;
 extern CQuad* g_BQuad;
 extern bool g_bRotating;
 extern bool g_bMoving;
@@ -53,7 +53,6 @@ extern bool gameStart;
 extern int styleType;
 #endif
 
-// 滑鼠按鈕按下後 callback function(回呼函式) ---------------
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
@@ -99,8 +98,6 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 #endif
 }
 // ---------------------------------------------------------------------------------------
-
-// 滑鼠在指定視窗上移動時的 callback function (回呼函式)
 void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
@@ -116,7 +113,6 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
 #elif EXAMPLE == 3
     if (g_bMoving)
     {
-        // 以滑鼠距離(0,0)的距離作為每一個模型的位移
 		GLfloat dx = g_viewScale * (xpos - width / 2.0f) / (width / 2.0f); 
 //		GLfloat dy = -g_viewScale * (ypos - height / 2.0f) / (height / 2.0f);
 
@@ -132,11 +128,10 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
     int i;
     if (g_bMoving)
     {
-        // 以滑鼠距離(0,0)的距離作為每一個模型的位移
         GLfloat dx = g_viewScale * (xpos - width / 2.0f) / (width / 2.0f);
         GLfloat dy = -g_viewScale * (ypos - height / 2.0f) / (height / 2.0f);
-        float xAngle = 3.1415916f*dx/4.0f; // dx -4 到 +4 代表角度  -PI 到  PI 度
-        float yAngle = 3.1415916f*dy/2.0f; // dy -4 到 +4 代表角度 -2PI 到 2PI 度
+        float xAngle = 3.1415916f*dx/4.0f;
+        float yAngle = 3.1415916f*dy/2.0f;
         mxGRot = glm::rotate(glm::mat4(1.0f), xAngle, glm::vec3(0.0f, 0.0f, 1.0f));
         mxBRot = glm::rotate(glm::mat4(1.0f), yAngle, glm::vec3(0.0f, 0.0f, 1.0f));
 
@@ -147,7 +142,6 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
 #elif EXAMPLE == 5
     if (g_bMoving)
     {
-        // 以滑鼠距離(0,0)的距離作為每一個模型的位移
         GLfloat dx = g_viewScale * (xpos - width / 2.0f) / (width / 2.0f);
 //        GLfloat dy = -g_viewScale * (ypos - height / 2.0f) / (height / 2.0f);
 
@@ -181,26 +175,9 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
 #endif
 }
 // ---------------------------------------------------------------------------------------
-// 
-// 當視窗大小改變的 callback function
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
-
-// key : GLFW_KEY_0、 GLFW_KEY_a、GLFW_KEY_ESCAPE、GLFW_KEY_SPACE
-//       完整定義在這邊 https://www.glfw.org/docs/latest/group__keys.html
-// action : 
-//          GLFW_PRESS：按鍵被按下。
-//          GLFW_RELEASE：按鍵被釋放。
-//          GLFW_REPEAT：按鍵被重複觸發（長按時會觸發多次）
-// mods : 
-//          GLFW_MOD_SHIFT：Shift 鍵被按下。
-//          GLFW_MOD_CONTROL：Ctrl 鍵被按下。
-//          GLFW_MOD_ALT：Alt 鍵被按下。
-//          GLFW_MOD_SUPER：Windows 鍵或 Command 鍵被按下。
-//          GLFW_MOD_CAPS_LOCK：Caps Lock 鍵被啟用。
-//          GLFW_MOD_NUM_LOCK：Num Lock 鍵被啟用。
-// 
 
     
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -224,12 +201,12 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
             }
 #endif
             break;
-        default: // 針對英文字母大小寫進行處理
+        default:
             if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-                // 檢查 Shift 鍵(左右兩邊各一個)是否被按下
+                
                 bool isShiftPressed = (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ||
                                       (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS);
-                // 判斷字母鍵的大小寫，預設使用鍵盤是沒有按下 CAPS 鍵
+                
                 if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
                     char letter = (isShiftPressed) ? ('A' + (key - GLFW_KEY_A)) : ('a' + (key - GLFW_KEY_A));
                     //std::cout << "key = " << letter << std::endl;

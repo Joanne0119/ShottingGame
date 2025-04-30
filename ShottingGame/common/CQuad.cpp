@@ -39,15 +39,15 @@ CQuad::~CQuad()
 {
 	glDeleteBuffers(1, &_vbo);  
 	glDeleteBuffers(1, &_ebo);
-	glDeleteVertexArrays(1, &_vao); //再釋放 VAO
-	glDeleteProgram(_shaderProg);  //釋放 shader program
+	glDeleteVertexArrays(1, &_vao);
+	glDeleteProgram(_shaderProg);
 	if (_points != NULL) delete[] _points;
 	if (_idx != NULL) delete[] _idx;
 }
 
 void CQuad::setupVertexAttributes()
 {
-	// 設定 VAO、VBO 與 EBO
+	
 	glGenVertexArrays(1, &_vao);
 	glGenBuffers(1, &_vbo);
 	glGenBuffers(1, &_ebo);
@@ -55,37 +55,37 @@ void CQuad::setupVertexAttributes()
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 	glBindVertexArray(_vao);
 
-	// 設定 VBO
+	
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, QUAD_VTX_COUNT * QUAD_VTX_ATTR_COUNT * sizeof(_points), _points, GL_STATIC_DRAW);
 
-	// 設定 EBO
+	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, QUAD_INDEX_COUNT * sizeof(GLuint), _idx, GL_STATIC_DRAW);
 
-	// 位置屬性
+	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, QUAD_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(0));
 	glEnableVertexAttribArray(0);
 
-	// 顏色屬性
+	
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, QUAD_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//法向量屬性
+	
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, QUAD_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	//貼圖座標屬性
+	
 	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, QUAD_VTX_ATTR_COUNT * sizeof(float), BUFFER_OFFSET(9 * sizeof(float)));
 	glEnableVertexAttribArray(3);
-	glBindVertexArray(0); // 解除對 VAO 的綁定
+	glBindVertexArray(0);
 }
 
 GLuint CQuad::setShader(const char* vshader, const  char* fshader)
 {
 	_shaderProg = createShader(vshader, fshader);
 	glUseProgram(_shaderProg);
-	_modelMxLoc = glGetUniformLocation(_shaderProg, "mxModel"); 	// 取得 MVP 變數的位置
+	_modelMxLoc = glGetUniformLocation(_shaderProg, "mxModel");
 	glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxTRS));
 	return _shaderProg;
 }
@@ -94,7 +94,7 @@ void CQuad::setShaderID(GLuint shaderID)
 {
 	_shaderProg = shaderID;
 	glUseProgram(_shaderProg);
-	_modelMxLoc = glGetUniformLocation(_shaderProg, "mxModel"); 	// 取得 MVP 變數的位置
+	_modelMxLoc = glGetUniformLocation(_shaderProg, "mxModel");
 	glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxTRS));
 }
 
@@ -179,7 +179,7 @@ void CQuad::updateMatrix()
 		_mxFinal = _mxTransform * _mxTRS;
 		_bTransform = false;
 	}
-	// 如多個模型使用相同的 shader program,因每一個模型的 mxTRS 都不同，所以每個frame都要更新
+	
 	glUniformMatrix4fv(_modelMxLoc, 1, GL_FALSE, glm::value_ptr(_mxFinal));
 }
 
