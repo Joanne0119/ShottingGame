@@ -137,6 +137,8 @@ void EnemyBoss::update(float dt)
     move(dt);
     
     if (_fireCooldown <= 0.0f) {
+        std::cout << _phase << std::endl;
+        std::cout << "boss hp: " << _hp << std::endl;
         shoot();
         _fireCooldown = getCooldownByPhase();
     }
@@ -181,9 +183,9 @@ void EnemyBoss::updatePhase() {
         return;
     }
 
-    if (_hp < _maxHp * 0.5f && _phase != BossPhase::Phase3) {
+    if (_hp < _maxHp * 0.5f) {
         _phase = BossPhase::Phase3;
-    } else if (_hp < _maxHp * 0.7f && _phase != BossPhase::Phase2) {
+    } else if (_hp < _maxHp * 0.7f) {
         _phase = BossPhase::Phase2;
     }
 }
@@ -198,9 +200,11 @@ void EnemyBoss::shoot()
             break;
         case BossPhase::Phase2:
             shootSpread(); // 多方向散射
+            std::cout << "p2" << std::endl;
             break;
         case BossPhase::Phase3:
             shootHoming(_playerPos); // 追蹤式
+            std::cout << "p3" << std::endl;
             break;
         default:
             break;
