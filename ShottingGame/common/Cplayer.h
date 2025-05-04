@@ -47,6 +47,7 @@ public:
     
     void setStyle(PlayerState::Style style);
     PlayerState::Style getStyle() const;
+    void setStyleColor(PlayerState::Style style);
 
 private:
     //action
@@ -56,6 +57,12 @@ private:
     PlayerState::State _state;
     PlayerState::Style _style;
     float _hurtTimer;
+    bool _isHit;
+    float _hitEffectDuration;
+    float _hitTimer;
+    float _flashInterval;
+    float _flashTimer;
+    bool _isVisible;
     
     CTriangle* top;
     CTrapezid* body;

@@ -4,7 +4,7 @@
 #include "CMissile.h"
 
 namespace EnemyState {
-    enum State { Alive, Hurt1, Hurt2, Hurt3, Exploding, Dead };
+    enum State { Alive, Hurt, Exploding, Dead };
 }
 
 class CEnemy {
@@ -32,7 +32,7 @@ public:
     glm::vec3 getPos() const;
     
     //Enemy Action
-    void onHit(int damage);
+    virtual void onHit(int damage);
     bool isDead() const;
     void setState(EnemyState::State state);
     EnemyState::State getState() const;

@@ -152,6 +152,10 @@ void CMissile::updateEnemy(float dt)
     }
     _pos += _dir * _speed * dt;
     setPos(_pos);
+    
+//    float angle = atan2(_dir.x, _dir.z); // Z 是前方的話
+//    float degrees = glm::degrees(angle);
+//    setRotY(degrees);  // 旋轉Y軸使其面對方向
 }
 
 void CMissile::setTarget(glm::vec3 target) {

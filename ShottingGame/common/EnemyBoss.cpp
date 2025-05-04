@@ -39,6 +39,12 @@ void EnemyBoss::init(){
     _phase = BossPhase::Entry;
     _maxHp = 30;
     _hp = 30;
+    _isHit = false;
+    _hitEffectDuration = 0.4f;
+    _hitTimer = 0.0f;
+    _flashInterval = 0.1f;
+    _flashTimer = 0.0f;
+    _isVisible = true;
     
     _points = new GLfloat[_vtxCount * _vtxAttrCount]{
         -0.5f, 0.4f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
@@ -79,6 +85,10 @@ void EnemyBoss::init(){
 void EnemyBoss::draw()
 {
     if (_state == EnemyState::Dead) return;
+    
+    if (_isHit) {
+        setColor(glm::vec3(1.0f, 0.0f, 0.0f)); 
+    }
 
     if (_state == EnemyState::Exploding) {
         // 你可以畫個簡單的爆炸或先用不同顏色表示
@@ -86,11 +96,13 @@ void EnemyBoss::draw()
         return;
     }
     else if(_state == EnemyState::Alive){
-        // Alive 狀態畫正常模型
-        updateMatrix();
-        glUseProgram(_shaderProg);
-        glBindVertexArray(_vao);
-        glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+        if (!_isHit || _isVisible) {
+           // Alive 狀態畫正常模型
+           updateMatrix();
+           glUseProgram(_shaderProg);
+           glBindVertexArray(_vao);
+           glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+       }
         
         for (auto it = _missiles.begin(); it != _missiles.end(); ++it) {
             (*it)->draw();
@@ -109,6 +121,31 @@ void EnemyBoss::drawExplosion()
 
 void EnemyBoss::update(float dt)
 {
+    if (_isHit) {
+        _hitTimer -= dt;
+        _flashTimer -= dt;
+        
+        // 控制閃爍間隔
+        if (_flashTimer <= 0.0f) {
+            _flashTimer = _flashInterval;  // 重置閃爍計時器
+            _isVisible = !_isVisible;      // 切換可見性狀態
+            
+            // 切換顏色
+            if (_isVisible) {
+                setColor(glm::vec3(0.0f, 0.0f, 0.0f));       // 顯示時為白色閃爍
+            } else {
+                setColor(glm::vec3(1.0f, 0.0f, 0.0f));    // 隱藏時恢復原色
+            }
+        }
+        
+        // 檢查整個受擊效果是否結束
+        if (_hitTimer <= 0.0f) {
+            _isHit = false;
+            _isVisible = true;             // 確保可見
+            setColor(glm::vec3(1.0f, 0.0f, 0.0f));        // 恢復正常顏色
+        }
+    }
+
     _fireCooldown -= dt;
 //    std::cout << "boss pos: (" << _pos.x << ',' << _pos.y << ')' << std::endl;
     
@@ -223,6 +260,9 @@ void EnemyBoss::shootSpread() {
         missile->setShaderID(_shaderProg);
         missile->setColor(glm::vec3(1.0f, 0.3f, 0.2f));
         missile->setScale(glm::vec3(0.12f));
+        missile->setRotX(180);
+        float deg = glm::degrees(atan2(dir.x, -dir.y)); // 相對於-Y軸的角度
+        missile->setRotZ(deg); // 若你希望在Z軸轉動（從上往下看的扇形）
         _missiles.push_back(missile);
     }
 }
@@ -245,6 +285,15 @@ float EnemyBoss::getCooldownByPhase() {
         case BossPhase::Phase3: return 1.0f;
         default: return 1.5f;
     }
+}
+
+void EnemyBoss::onHit(int damge) {
+    CEnemy::onHit(damge);
+    _isHit = true;
+    _hitTimer = _hitEffectDuration;
+    _flashTimer = _flashInterval;
+    _isVisible = true;
+    setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 

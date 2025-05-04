@@ -23,6 +23,7 @@ public:
     virtual void update(float dt) override;
     virtual void move(float dt) override;
     virtual void shoot() override;
+    virtual void onHit(int damge) override;
     float _angle;
     virtual void updatePhase();
     virtual float getCooldownByPhase();
@@ -33,4 +34,10 @@ protected:
     void shootHoming(glm::vec3 playerPos);
     glm::vec3 _playerPos;
     int _maxHp;
+    bool _isHit;
+    float _hitEffectDuration;
+    float _hitTimer;
+    float _flashInterval;
+    float _flashTimer;          
+    bool _isVisible;
 };
