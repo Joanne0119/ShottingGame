@@ -45,7 +45,6 @@
 /* Begin PBXFileReference section */
 		F50718652DBB6163006946A2 /* CHeart.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CHeart.cpp; sourceTree = "<group>"; };
 		F50718672DBB6177006946A2 /* CHeart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHeart.h; sourceTree = "<group>"; };
-		F54931BB2DCB16B1005C31DD /* REDME.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = REDME.md; sourceTree = "<group>"; };
 		F560DCFD2DB8C69D007B7340 /* EnemyC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyC.cpp; sourceTree = "<group>"; };
 		F560DCFF2DB8C6AC007B7340 /* EnemyC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnemyC.h; sourceTree = "<group>"; };
 		F560DD002DB8C6BD007B7340 /* EnemyBoss.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyBoss.cpp; sourceTree = "<group>"; };
@@ -112,7 +111,6 @@
 				F5F30C2B2D93D8DF001924C0 /* ShottingGame */,
 				F5F30C2A2D93D8DF001924C0 /* Products */,
 				F5F30C332D93D933001924C0 /* Frameworks */,
-				F54931BB2DCB16B1005C31DD /* REDME.md */,
 			);
 			sourceTree = "<group>";
 		};
