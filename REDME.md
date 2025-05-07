@@ -94,11 +94,6 @@ glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 ```
-
----
-
-參考連結：[stackoverflow 討論](https://stackoverflow.com/questions/61925299/trying-to-setup-xcode-with-opengl)
-
 ---
                         
 # 專案內容說明
